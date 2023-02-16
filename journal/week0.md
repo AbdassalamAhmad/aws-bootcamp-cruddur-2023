@@ -52,6 +52,7 @@ The Output was
     "Arn": "arn:aws:iam::$AWS_ACCOUNT_ID:user/Abdassalam"
 }
 ```
+![proof of working AWS CLI](https://user-images.githubusercontent.com/83673888/219456691-1cc6dea5-2ab8-4856-a4b6-83015bf990d6.png)
 
 ## Enable Billing 
 
