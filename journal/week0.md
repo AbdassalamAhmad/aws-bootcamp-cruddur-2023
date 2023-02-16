@@ -1,4 +1,4 @@
-# Week 0 — Billing and Architecture
+# Week 0 — Billing and Architecture "Required Homework"
 ## Getting the AWS CLI Working
 ### Install AWS CLI
 I've updated my `.gitpod.yml` file with the following code:
@@ -28,7 +28,7 @@ $ export AWS_SECRET_ACCESS_KEY=""
 $ export AWS_DEFAULT_REGION=eu-south-1
 ```
 
-This step will create new variables in our gitpod account@variables tab.
+This step will create new variables in my gitpod account@variables tab.
 ```sh
 $ gp env AWS_ACCESS_KEY_ID=""
 $ gp env AWS_SECRET_ACCESS_KEY=""
