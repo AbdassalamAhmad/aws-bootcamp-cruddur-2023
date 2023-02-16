@@ -1,0 +1,44 @@
+[
+    {
+        "Notification": {
+            "ComparisonOperator": "GREATER_THAN",
+            "NotificationType": "ACTUAL",
+            "Threshold": 50,
+            "ThresholdType": "PERCENTAGE"
+        },
+        "Subscribers": [
+            {
+                "Address": "abdassalam.ahmad98@gmail.com",
+                "SubscriptionType": "EMAIL"
+            }
+        ]
+    },
+    {
+      "Notification": {
+        "ComparisonOperator": "GREATER_THAN",
+        "NotificationType": "ACTUAL",
+        "Threshold": 75,
+        "ThresholdType": "PERCENTAGE"
+      },
+      "Subscribers": [
+            {
+                "Address": "abdassalam.ahmad98@gmail.com",
+                "SubscriptionType": "EMAIL"
+            }
+        ]
+    },
+    {
+      "Notification": {
+        "ComparisonOperator": "GREATER_THAN",
+        "NotificationType": "ACTUAL",
+        "Threshold": 100,
+        "ThresholdType": "PERCENTAGE"
+      },
+      "Subscribers": [
+            {
+                "Address": "abdassalam.ahmad98@gmail.com",
+                "SubscriptionType": "EMAIL"
+            }
+        ]
+    }
+]
