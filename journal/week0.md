@@ -93,6 +93,8 @@ I've checked my email and confirm the subscription.
 I've created 2 budgets one using aws console, then deleted it, and one using cli with the help of this next document.
 [aws budgets create-budget](https://docs.aws.amazon.com/cli/latest/reference/budgets/create-budget.html)
 
+**IMPORTANT NOTE:** you should have 2 budgets in free tier only after that you'll be charged 3 dollar per month.
+steps to create budget using CLI:
 - I've Grapped my account ID.
 ```sh
 $ aws sts get-caller-identity --query Account --output text
