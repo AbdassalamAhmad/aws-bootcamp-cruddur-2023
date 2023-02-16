@@ -85,7 +85,7 @@ I've created a subscription and supply the TopicARN and my Email.
 $ aws sns subscribe \
     --topic-arn arn:aws:sns:eu-south-1:$AWS_ACCOUNT_ID:billing-alarm \
     --protocol email \
-    --notification-endpoint abdassalam.ahmad98@gmail.com
+    --notification-endpoint abdassalam******@gmail.com
 ```
 
 I've checked my email and confirm the subscription.
@@ -111,6 +111,7 @@ $ aws budgets create-budget \
     --notifications-with-subscribers file://aws/json/budget-notifications-with-subscribers.json
 ```
 ![proof of AWS budget](https://user-images.githubusercontent.com/83673888/219457582-f3af44c3-3485-4e39-b697-f06f883f65e3.png)
+**NOTE:** I have modified this file [aws/json/budget-notifications-with-subscribers.json](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/aws/json/budget-notifications-with-subscribers.json) so that it can have multiple thresholds rather than only one.
 
 ## Create CloudWatch Alarm
 
