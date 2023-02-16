@@ -109,6 +109,7 @@ $ aws budgets create-budget \
     --budget file://aws/json/budget.json \
     --notifications-with-subscribers file://aws/json/budget-notifications-with-subscribers.json
 ```
+![proof of AWS budget](https://user-images.githubusercontent.com/83673888/219457582-f3af44c3-3485-4e39-b697-f06f883f65e3.png)
 
 ## Create CloudWatch Alarm
 
