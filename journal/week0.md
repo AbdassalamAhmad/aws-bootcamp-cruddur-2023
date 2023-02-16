@@ -124,4 +124,11 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm_config.js
 **NOTE**: I deleted this cloudwatch because it's not doable by aws console in eu-south-1 which is the closest region to me. And I think that aws budget is enough and can get the job done.
 
 ## Recreate Architectual Diagram in Lucid Charts:
-<to-do> add screenshot and link to lucid account with chart.
+<to-do> add screenshot and link to lucid account with chart. and put my name as a proof.
+  
+ 
+## Homework challenges:
+  1. Created CI/CD lucid Diagram.
+  2. I've see that there is a limit of 5 Elastic IP to link to your EC2s which could be extended with a support ticket.
+  3. I've delt with support on December 2022 because I didn't know that NAT gateways aren't part of free-tier and I was charged almost 1.5$ so they gave me 3$ credit and my issue was resolve.
+  
