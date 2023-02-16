@@ -53,8 +53,9 @@ The Output was
 }
 ```
 ![proof of working AWS CLI](https://user-images.githubusercontent.com/83673888/219456691-1cc6dea5-2ab8-4856-a4b6-83015bf990d6.png)
+## Creating a Billing Alarm
 
-## Enable Billing 
+### Enable Billing 
 
 I've turned on Billing Alerts to recieve alerts using these steps:
 
@@ -62,7 +63,7 @@ I've turned on Billing Alerts to recieve alerts using these steps:
 - Under `Billing Preferences` Choose `Receive Billing Alerts`
 - Save Preferences
 
-## Creating a Billing Alarm
+
 
 ### Create SNS Topic
 
@@ -124,7 +125,7 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm_config.js
 **NOTE**: I deleted this cloudwatch because it's not doable by aws console in eu-south-1 which is the closest region to me. And I think that aws budget is enough and can get the job done.
 
 ## Recreate Architectual Diagram in Lucid Charts:
-<to-do> add screenshot and link to lucid account with chart. and put my name as a proof.
+`to-do` add screenshot and link to lucid account with chart. and put my name as a proof.
   
  
 ## Homework challenges:
