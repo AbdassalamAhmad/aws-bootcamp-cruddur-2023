@@ -127,7 +127,7 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm_config.js
 
 ## Recreate Architectual Diagram in Lucid Charts:
 - Recreated Logical Architectual Diagram of Cruddur App using Lucid Charts.
-![Cruddur App Lucid Chart](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Cruddur%20App.jpeg)
+![Cruddur App Lucid Chart](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Cruddur_App.jpeg)
 - To view the chart in lucid charts login to your lucid account and click [this link](https://lucid.app/lucidchart/0afb0704-5f5b-4a7d-b0e7-0dffb694db62/edit?viewport_loc=-750%2C-379%2C2560%2C1232%2C0_0&invitationId=inv_46b06e1d-ee2c-4b27-a1fd-7481f70ec961)
  
 ## Homework challenges:
