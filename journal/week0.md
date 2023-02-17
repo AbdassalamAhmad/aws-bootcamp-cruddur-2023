@@ -131,7 +131,9 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm_config.js
 - To view the chart in lucid charts login to your lucid account and click [this link](https://lucid.app/lucidchart/0afb0704-5f5b-4a7d-b0e7-0dffb694db62/edit?viewport_loc=-750%2C-379%2C2560%2C1232%2C0_0&invitationId=inv_46b06e1d-ee2c-4b27-a1fd-7481f70ec961)
  
 ## Homework challenges:
-  1. Created CI/CD lucid Diagram.
+  1. Created CI/CD Architectual Diagram using Lucid Charts.
+![CICD Lucid Chart](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/journal/assets/CICD.jpeg)
+- To view the chart in lucid charts login to your lucid account and click [this link](https://lucid.app/lucidchart/9f36a655-3374-4fa1-b21e-23731655a317/edit?viewport_loc=-197%2C-115%2C1707%2C821%2C0_0&invitationId=inv_8db883df-1928-4aad-95f4-0964309ad4be)
   2. I've see that there is a limit of 5 Elastic IP to link to your EC2s which could be extended with a support ticket.
   3. I've delt with support on December 2022 because I didn't know that NAT gateways aren't part of free-tier and I was charged almost 1.5$ so they gave me 3$ credit and my issue was resolve.
   
