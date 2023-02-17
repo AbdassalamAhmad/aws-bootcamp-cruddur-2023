@@ -126,8 +126,9 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm_config.js
 **NOTE**: I deleted this cloudwatch because it's not doable by aws console in eu-south-1 which is the closest region to me. And I think that aws budget is enough and can get the job done.
 
 ## Recreate Architectual Diagram in Lucid Charts:
-`to-do` add screenshot and link to lucid account with chart. and put my name as a proof.
-  
+- Recreated Logical Architectual Diagram of Cruddur App using Lucid Charts.
+![Cruddur App Lucid Chart](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/journal/assets/Cruddur%20App.jpeg)
+- To view the chart in lucid charts login to your lucid account and click [this link](https://lucid.app/lucidchart/0afb0704-5f5b-4a7d-b0e7-0dffb694db62/edit?viewport_loc=-750%2C-379%2C2560%2C1232%2C0_0&invitationId=inv_46b06e1d-ee2c-4b27-a1fd-7481f70ec961)
  
 ## Homework challenges:
   1. Created CI/CD lucid Diagram.
