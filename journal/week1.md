@@ -25,10 +25,10 @@ So, I **skipped the local part and head to the dockerization part**.
 - Built a Docker image using this command `docker build -t frontend-react-js ./frontend-react-js`
 - Run the image using this command `docker run -p 3000:3000 -d frontend-react-js`
 
-### Running both Containers Together
+### Running Both Containers Together
 - `docker run -p 4567:4567 -it --network try_app -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask`
 - `docker run -p 3000:3000 -e REACT_APP_BACKEND_URL="http://127.0.0.1:4567" --network try_app -d frontend-react-js`
 - ![image](https://user-images.githubusercontent.com/83673888/220197021-e303a4dd-3585-4ca0-8978-00028c9798e4.png)
 
 ## Running Cruddur App using Docker-Compose
-- Created [docker-compose.yml]() at the root of my project.
+- Created [docker-compose.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose.yml) at the root of my project.
