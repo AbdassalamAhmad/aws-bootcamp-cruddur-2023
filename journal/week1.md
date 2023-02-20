@@ -16,7 +16,7 @@ So, I **skipped the local part and head to the dockerization part**.
 - Created [backend-flask/Dockerfile](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/backend-flask/Dockerfile) locally.
 - Built a Docker image using this command  `docker build -t backend-flask ./backend-flask`
 - Run the image using this command `docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask`
-![image](https://user-images.githubusercontent.com/83673888/220186386-6d2442f6-2288-4bcd-bd09-50a1fea97ad0.png)
+- ![image](https://user-images.githubusercontent.com/83673888/220186386-6d2442f6-2288-4bcd-bd09-50a1fea97ad0.png)
 - **NOTE:** I already have very good understanding of Docker so I skipped running other commands and headead to Front-End.
 
 ### Front-End Docker Part
@@ -28,6 +28,7 @@ So, I **skipped the local part and head to the dockerization part**.
 ### Running both Containers Together
 - `docker run -p 4567:4567 -it --network try_app -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask`
 - `docker run -p 3000:3000 -e REACT_APP_BACKEND_URL="http://127.0.0.1:4567" --network try_app -d frontend-react-js`
+- ![image](https://user-images.githubusercontent.com/83673888/220197021-e303a4dd-3585-4ca0-8978-00028c9798e4.png)
 
 ## Running Cruddur App using Docker-Compose
 - Created [docker-compose.yml]() at the root of my project.
