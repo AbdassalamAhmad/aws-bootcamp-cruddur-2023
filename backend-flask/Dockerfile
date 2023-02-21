@@ -10,6 +10,6 @@ COPY . .
 ENV FLASK_ENV=development
 
 #this is metadata only and won't actually expose a port.
-EXPOSE ${PORT}
+EXPOSE 4567
 
 CMD [ "flask", "run", "--host=0.0.0.0", "--port=4567"]
