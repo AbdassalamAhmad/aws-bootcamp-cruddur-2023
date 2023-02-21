@@ -31,4 +31,7 @@ So, I **skipped the local part and head to the dockerization part**.
 - ![image](https://user-images.githubusercontent.com/83673888/220197021-e303a4dd-3585-4ca0-8978-00028c9798e4.png)
 
 ## Running Cruddur App using Docker-Compose
-- Created [docker-compose.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose.yml) at the root of my project.
+- Created [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) at the root of my project.
+- Changed Env Vars from gitpod to localhost.
+- Removed volume bind from front-end because I didn't run `npm install` in my local machine.
+- Run this command `docker-compose -f "docker-compose-local.yml" up --build`
