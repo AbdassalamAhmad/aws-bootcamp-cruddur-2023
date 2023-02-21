@@ -35,3 +35,5 @@ So, I **skipped the local part and head to the dockerization part**.
 - Changed Env Vars from gitpod to localhost.
 - Removed volume bind from front-end because I didn't run `npm install` in my local machine.
 - Run this command `docker-compose -f "docker-compose-local.yml" up --build`
+- ![image](https://user-images.githubusercontent.com/83673888/220248434-9a35849e-83ad-4c6d-a6bb-a4ea76093628.png)
+
