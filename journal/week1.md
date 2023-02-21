@@ -40,6 +40,6 @@ So, I **skipped the local part and head to the dockerization part**.
 ## Running Cruddur App on Gitpod
 - Created this [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml) file to run the app.
 - Installed Docker Extension and added it to `.gitpod.yml` to install it everytime i open the workspace.
-- Run `docker compose -f "docker-compose.yml" up -d --build` to see the app running.
+- Run `docker compose -f "docker-compose-gitpod.yml" up -d --build` to see the app running.
 - ![image](https://user-images.githubusercontent.com/83673888/220312889-6808ae01-4981-495c-b901-72a42924c33e.png)
 
