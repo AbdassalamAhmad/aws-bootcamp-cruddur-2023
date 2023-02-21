@@ -1,5 +1,5 @@
 # Week 1 — App Containerization
-
+## Required Homework
 ## Running Flask App Locally
 I've tried running it locally and it didn't work.
 I'm using windows machine and couldn't do the `export FRONTEND_URL="*" && export BACKEND_URL="*"` commands.<br> 
@@ -43,4 +43,17 @@ So, I **skipped the local part and head to the dockerization part**.
 - Installed Docker Extension and added it to `.gitpod.yml` to install it everytime i open the workspace.
 - Run `docker compose -f "docker-compose-gitpod.yml" up -d --build` to see the app running.
 - ![image](https://user-images.githubusercontent.com/83673888/220312889-6808ae01-4981-495c-b901-72a42924c33e.png)
+
+## Homework Challenges
+## Running Dockerfiles Commands as a shell Script
+- Build a shell script that will build & run both Front & Back End Dockerfile.
+- Created a network to link front-end with back-end.
+- Here is the file [build_run_dockerfiles.sh](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/build_run_dockerfiles.sh)
+
+## Pushing Flask Back-End Image to Docker Hub
+- Used `docker login` command to login to my docker hub account.
+- Tag the image `docker tag backend-flask:latest abod98/backend-flask:bootcamp`
+- Pushed the image `docker push abod98/backend-flask:bootcamp`
+- Here is the [image url](https://hub.docker.com/r/abod98/backend-flask) in docker hub.
+
 
