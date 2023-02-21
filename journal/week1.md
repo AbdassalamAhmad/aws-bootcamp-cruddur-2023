@@ -37,3 +37,7 @@ So, I **skipped the local part and head to the dockerization part**.
 - Run this command `docker-compose -f "docker-compose-local.yml" up --build`
 - ![image](https://user-images.githubusercontent.com/83673888/220248434-9a35849e-83ad-4c6d-a6bb-a4ea76093628.png)
 
+## Running Cruddur App on Gitpod
+- Installed Docker Extension and added it to `.gitpod.yml` to install it everytime i open the workspace.
+- Run `docker compose -f "docker-compose.yml" up -d --build` to see the app running.
+- 
