@@ -1,5 +1,43 @@
 # Week 1 — App Containerization
 ## Required Homework
+
+## Running Cruddur App using Docker-Compose
+- Created [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) at the root of my project.
+- Changed Env Vars from gitpod to localhost.
+- Removed volume bind from front-end because I didn't run `npm install` in my local machine.
+- Run this command `docker-compose -f "docker-compose-local.yml" up --build`
+- ![image](https://user-images.githubusercontent.com/83673888/220248434-9a35849e-83ad-4c6d-a6bb-a4ea76093628.png)
+
+## Running Cruddur App on Gitpod
+- Created this [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml) file to run the app.
+- Installed Docker Extension and added it to `.gitpod.yml` to install it everytime i open the workspace.
+- Added a task to run `npm i` inside `./frontend-react-js` folder in the `.gitpod.yml`
+- Run `docker compose -f "docker-compose-gitpod.yml" up -d --build` to see the app running.
+- ![image](https://user-images.githubusercontent.com/83673888/220312889-6808ae01-4981-495c-b901-72a42924c33e.png)
+
+## Homework Challenges
+## Running Dockerfiles Commands as a shell Script
+- Build a shell script that will build & run both Front & Back End Dockerfile.
+- Created a network to link front-end with back-end.
+- Here is the file [build_run_dockerfiles.sh](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/build_run_dockerfiles.sh)
+
+## Pushing Flask Back-End Image to Docker Hub
+- Used `docker login` command to login to my docker hub account.
+- Tag the image `docker tag backend-flask:latest abod98/backend-flask:bootcamp`
+- Pushed the image `docker push abod98/backend-flask:bootcamp`
+- Here is the [image url](https://hub.docker.com/r/abod98/backend-flask) in docker hub.
+
+## Implement Two Healthchecks in both Local & GitPod Docker Compose Files
+- Add health checks for front-end and backend with these two commands
+- Front-End `curl --fail http://localhost:3000 || exit 1`
+- Back-End `wget --no-verbose --tries=1 --spider http://localhost:4567/api/activities/home || exit 1`
+- Replaced local host link with gitpod link in gitpod docker-compose file.
+- Documented what these commands do inside both [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) AND [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml)
+
+## Launch EC2 Instance && Pull My Public Flask Image
+- ![image](https://user-images.githubusercontent.com/83673888/220558794-f5a02325-3a8c-4c1e-95fd-bbf825ee828b.png)
+
+
 ## Running Flask App Locally
 I've tried running it locally and it didn't work.
 I'm using windows machine and couldn't do the `export FRONTEND_URL="*" && export BACKEND_URL="*"` commands.<br> 
@@ -30,41 +68,3 @@ So, I **skipped the local part and head to the dockerization part**.
 - `docker run -p 4567:4567 -it --network try_app -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask`
 - `docker run -p 3000:3000 -e REACT_APP_BACKEND_URL="http://127.0.0.1:4567" --network try_app -d frontend-react-js`
 - ![image](https://user-images.githubusercontent.com/83673888/220197021-e303a4dd-3585-4ca0-8978-00028c9798e4.png)
-
-## Running Cruddur App using Docker-Compose
-- Created [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) at the root of my project.
-- Changed Env Vars from gitpod to localhost.
-- Removed volume bind from front-end because I didn't run `npm install` in my local machine.
-- Run this command `docker-compose -f "docker-compose-local.yml" up --build`
-- ![image](https://user-images.githubusercontent.com/83673888/220248434-9a35849e-83ad-4c6d-a6bb-a4ea76093628.png)
-
-## Running Cruddur App on Gitpod
-- Created this [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml) file to run the app.
-- Installed Docker Extension and added it to `.gitpod.yml` to install it everytime i open the workspace.
-- Run `docker compose -f "docker-compose-gitpod.yml" up -d --build` to see the app running.
-- ![image](https://user-images.githubusercontent.com/83673888/220312889-6808ae01-4981-495c-b901-72a42924c33e.png)
-
-## Homework Challenges
-## Running Dockerfiles Commands as a shell Script
-- Build a shell script that will build & run both Front & Back End Dockerfile.
-- Created a network to link front-end with back-end.
-- Here is the file [build_run_dockerfiles.sh](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/build_run_dockerfiles.sh)
-
-## Pushing Flask Back-End Image to Docker Hub
-- Used `docker login` command to login to my docker hub account.
-- Tag the image `docker tag backend-flask:latest abod98/backend-flask:bootcamp`
-- Pushed the image `docker push abod98/backend-flask:bootcamp`
-- Here is the [image url](https://hub.docker.com/r/abod98/backend-flask) in docker hub.
-
-## Implement Two Healthchecks in both Local & GitPod Docker Compose Files
-- Add health checks for front-end and backend with these two commands
-- Front-End `curl --fail http://localhost:3000 || exit 1`
-- Back-End `wget --no-verbose --tries=1 --spider http://localhost:4567/api/activities/home || exit 1`
-- Replaced local host link with gitpod link in gitpod docker-compose file.
-- Documented what these commands do inside both [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) AND [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml)
-
-## Launch EC2 Instance && Pull My Public Flask Image
-- ![image](https://user-images.githubusercontent.com/83673888/220558794-f5a02325-3a8c-4c1e-95fd-bbf825ee828b.png)
-
-
-
