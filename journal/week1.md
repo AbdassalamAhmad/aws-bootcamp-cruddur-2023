@@ -56,4 +56,11 @@ So, I **skipped the local part and head to the dockerization part**.
 - Pushed the image `docker push abod98/backend-flask:bootcamp`
 - Here is the [image url](https://hub.docker.com/r/abod98/backend-flask) in docker hub.
 
+## Implement Two Healthchecks in both Local & GitPod Docker Compose Files
+- Add health checks for front-end and backend with these two commands
+- Front-End `curl --fail http://localhost:3000 || exit 1`
+- Back-End `wget --no-verbose --tries=1 --spider http://localhost:4567/api/activities/home || exit 1`
+- Replaced local host link with gitpod link in gitpod docker-compose file.
+- Documented what these commands do inside both [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) AND [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml)
+
 
