@@ -64,6 +64,7 @@ So, I **skipped the local part and head to the dockerization part**.
 - Documented what these commands do inside both [docker-compose-local.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-local.yml) AND [docker-compose-gitpod.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-gitpod.yml)
 
 ## Launch EC2 Instance && Pull My Public Flask Image
-- ![image](https://user-images.githubusercontent.com/83673888/220557451-263f7414-b720-4266-9aa6-3d6b6d7541e2.png)
+- ![image](https://user-images.githubusercontent.com/83673888/220558794-f5a02325-3a8c-4c1e-95fd-bbf825ee828b.png)
+
 
 
