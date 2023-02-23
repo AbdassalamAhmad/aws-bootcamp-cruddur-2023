@@ -1,0 +1,2 @@
+# ignore dynamodb volume folder named docker
+docker/* 
