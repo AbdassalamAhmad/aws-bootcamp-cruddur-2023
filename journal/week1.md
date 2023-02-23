@@ -125,7 +125,23 @@ volumes:
       sudo apt update
       sudo apt install -y postgresql-client-13 libpq-dev
 ```
+- Installed a postgres Extension to explore database
+```yml
+vscode:
+  extensions:
+    - cweijan.vscode-postgresql-client2
+```
+
 - Ensure that postgres is working by trying these commands
+```shell
+psql -U postgres --host localhost
+# here we will enter the password
+
+# the command \l will list databases
+postgres=# \l
+```
+#### Proof of Postgres Extension & Client Working
+
 
 ## Homework Challenges
 ## Running Dockerfiles Commands as a shell Script
