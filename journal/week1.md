@@ -15,6 +15,45 @@
 - Run `docker compose -f "docker-compose-gitpod.yml" up -d --build` to see the app running.
 - ![image](https://user-images.githubusercontent.com/83673888/220312889-6808ae01-4981-495c-b901-72a42924c33e.png)
 
+
+## Write the Notification Endpoint for OpenAPI
+```yml
+  /api/activities/notifications:
+    get:
+      description: 'Return a feed of activity for people I follow'
+      tags:
+        - activities
+      responses:
+        '200':
+          description: Returns an array of activities"
+          content:
+            application/json:
+              schema: # this for refactoring code so it will be used in other parts of the code like in home activity
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+```
+
+## Write a Flask Backend Endpoint for Notifications
+- Copied [home_activites.py](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/backend-flask/services/home_activities.py) file into [notifications_activities.py](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/backend-flask/services/notifications_activities.py) because they both have the same schema so they share the same structure of return ojects.
+- Referenced the `notifications_activities.py` file inside [app.py](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/backend-flask/app.py)
+- Added a function inside `app.py` to run the `notifications_activities.py` when someone click on it or if we go directly to its URL
+
+## Implement a React Page for Notifications
+- Added the notifications page js file [NotificationsFeedPage.js](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/src/pages/NotificationsFeedPage.js)
+- Referenced the `NotificationsFeedPage.js` file inside `App.js` file.
+- Should've edit the `DesktopNavigation.js` file to include notifications but it's already there.
+
+#### Proof of Notifications Implementation
+
+
+
+
+
+
+
+
+
 ## Homework Challenges
 ## Running Dockerfiles Commands as a shell Script
 - Build a shell script that will build & run both Front & Back End Dockerfile.
