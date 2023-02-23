@@ -141,6 +141,7 @@ psql -U postgres --host localhost
 postgres=# \l
 ```
 #### Proof of Postgres Extension & Client Working
+![image](https://user-images.githubusercontent.com/83673888/220905968-18092eec-4ed4-47e9-bd5f-bea195d06496.png)
 
 
 ## Homework Challenges
