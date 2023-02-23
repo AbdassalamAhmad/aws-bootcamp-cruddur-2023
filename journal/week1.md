@@ -45,6 +45,7 @@
 - Should've edit the `DesktopNavigation.js` file to include notifications but it's already there.
 
 #### Proof of Notifications Implementation
+![image](https://user-images.githubusercontent.com/83673888/220822698-d5058cba-2af8-420f-ad11-7231d8715b5d.png)
 
 
 
