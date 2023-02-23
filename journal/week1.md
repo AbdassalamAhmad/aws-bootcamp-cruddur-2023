@@ -47,13 +47,85 @@
 #### Proof of Notifications Implementation
 ![image](https://user-images.githubusercontent.com/83673888/220822698-d5058cba-2af8-420f-ad11-7231d8715b5d.png)
 
+## Run DynamoDB Local Container and Ensure it Works
+- Added this code to my docker-compose file
+```yml
+  dynamodb-local:
+    # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
+    # We needed to add user:root to get this working.
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+```
+- Ensure that DynamoDB Local is working by trying to Create a table, an Item, List Tables, Get Records.
 
+### Create a table
+```shell
+aws dynamodb create-table \
+    --endpoint-url http://localhost:8000 \
+    --table-name Music \
+    --attribute-definitions \
+        AttributeName=Artist,AttributeType=S \
+        AttributeName=SongTitle,AttributeType=S \
+    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
+```
 
+### Create an Item
+```shell
+aws dynamodb put-item \
+    --endpoint-url http://localhost:8000 \
+    --table-name Music \
+    --item \
+        '{"Artist": {"S": "No One You Know"}, "SongTitle": {"S": "Call Me Today"}, "AlbumTitle": {"S": "Somewhat Famous"}}' \
+    --return-consumed-capacity TOTAL  
+```
 
+### List Tables
+```shell
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+```
 
+### Get Records
+```shell
+aws dynamodb scan --table-name Music --query "Items" --endpoint-url http://localhost:8000
+```
 
+## Run Postgres Container and Ensure it Works
+- Added this code to my docker-compose file
+```yml
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
 
-
+volumes:
+  db:
+    driver: local
+```
+- Installed the postgres client into Gitpod
+```yml
+  - name: install postgres client
+    init: |
+      curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+      echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+      sudo apt update
+      sudo apt install -y postgresql-client-13 libpq-dev
+```
+- Ensure that postgres is working by trying these commands
 
 ## Homework Challenges
 ## Running Dockerfiles Commands as a shell Script
