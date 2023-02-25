@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  api:
+    environment:
+      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build:
+      context: ./backend-flask
+      dockerfile: Dockerfile
+    ports:
+      - "4567:4567"
+    image: react-flask-app-api
+    volumes:
+      - ./backend-flask:/backend-flask
+  
+  client:
+    environment:
+      REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build:
+      context: ./frontend-react-js
+      dockerfile: Dockerfile.node-nginx
+    image: react-flask-app-client
+    ports:
+      - "3000:80"
+    # volumes:
+    #   - ./frontend-react-js:/frontend-react-js
