@@ -12,7 +12,10 @@ RUN npm run build
 
 
 # Stage 2: Run the application
-FROM node:16.18-alpine AS runtime
+FROM node:16.18-alpine AS runtime 
+
+# Install curl because it's not included in node:16.18-alpine (curl used to do health checks)
+RUN apk --no-cache add curl
 
 WORKDIR /frontend-react-js
 
