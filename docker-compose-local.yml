@@ -21,7 +21,9 @@ services:
       - backend-flask
     environment:
       REACT_APP_BACKEND_URL: "http://127.0.0.1:4567"
-    build: ./frontend-react-js
+    build:
+      context: ./frontend-react-js
+      dockerfile: Dockerfile.one-stage
     ports:
       - "3000:3000"
     healthcheck:
