@@ -26,10 +26,10 @@ services:
       - "3000:3000"
     healthcheck:
       test: curl --fail https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST} || exit 1
-      interval: 20s
-      retries: 2
-      start_period: 20s
-      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 20s
     volumes:
       - ./frontend-react-js:/frontend-react-js
 
