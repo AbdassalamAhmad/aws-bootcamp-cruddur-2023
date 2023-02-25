@@ -156,6 +156,25 @@ postgres=# \l
 - Pushed the image `docker push abod98/backend-flask:bootcamp`
 - Here is the [image url](https://hub.docker.com/r/abod98/backend-flask) in docker hub.
 
+## Implement Multi-Stage Building for Front-End.
+- Used `node:16.18` and `node:16.18-alpine` images for my first multi-stgae build.
+- Used `node:16.18` and `nginx:stable-alpine` images for my second multi-stgae build.
+- Faced a lot of issues in the nginx multi-stage and resolved alot of them:
+- I had to configure `nginx.conf` file because If the container had to only serve static files, the default configuration would be sufficient. but in our case we also need to proxy requests for URLs that start with /api to the API container, so the default configuration is not sufficient.
+- Added debug for home page for env of react backend, because env of gitpod didn't pass in docker compose even with actual value.<br>
+when i tried passing env in dockerfile also didn't work but the actual value worked.<br>
+
+when i attach shell to nginx and do `echo $REACT_APP_BACKEND_URL` it works but in the node.js app it won't
+and it return undefined when using `console.log(process.env.REACT_APP_BACKEND_URL);`.
+
+- Size Comparison `node = 358MB` while `nginx = 25.3MB`.
+- Finally, I'll use node image for development and nginx for last deployment.
+
+- Here are the files added [docker-compose-nginx.yml](), [Dockerfile.node-node](), [Dockerfile.node-nginx]().
+
+#### Resources Used for this Multi-Stage
+- [how-to-dockerize-a-react-flask-nginx-project](https://blog.miguelgrinberg.com/post/how-to-dockerize-a-react-flask-project).
+
 ## Implement Two Healthchecks in both Local & GitPod Docker Compose Files
 - Add health checks for front-end and backend with these two commands
 - Front-End `curl --fail http://localhost:3000 || exit 1`
