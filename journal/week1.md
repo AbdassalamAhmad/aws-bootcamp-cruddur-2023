@@ -168,9 +168,11 @@ when i attach shell to nginx and do `echo $REACT_APP_BACKEND_URL` it works but i
 and it return undefined when using `console.log(process.env.REACT_APP_BACKEND_URL);`.
 
 - Size Comparison `node = 358MB` while `nginx = 25.3MB`.
+- Using Nginx Container I won't need to expose my API because I used nginx to proxy requests to api internally so I can make it private and don't map ports to it.
+"Note that the api container does not need to map any ports, because it is now an internal service that only needs to be reachable by the client container, but not from the outside world."
 - Finally, I'll use node image for development and nginx for last deployment.
 
-- Here are the files added [docker-compose-nginx.yml](), [Dockerfile.node-node](), [Dockerfile.node-nginx]().
+- Here are the files added [docker-compose-nginx.yml](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/docker-compose-nginx.yml), [Dockerfile.node-node](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/Dockerfile.node-node), [Dockerfile.node-nginx](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/frontend-react-js/Dockerfile.node-nginx).
 
 #### Resources Used for this Multi-Stage
 - [how-to-dockerize-a-react-flask-nginx-project](https://blog.miguelgrinberg.com/post/how-to-dockerize-a-react-flask-project).
