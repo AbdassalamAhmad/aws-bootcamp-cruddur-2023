@@ -1,0 +1,26 @@
+FROM node:16.18 AS build
+
+WORKDIR /frontend-react-js
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+
+# Stage 2: Run the application
+FROM node:16.18-alpine AS runtime
+
+WORKDIR /frontend-react-js
+
+COPY --from=build /frontend-react-js /frontend-react-js
+
+#see the size of the folder
+RUN du -hc -d 1 /frontend-react-js
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
