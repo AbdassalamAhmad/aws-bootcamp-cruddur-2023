@@ -29,7 +29,7 @@ provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
 
-# Show this in the logs within the backend-flask app (STDOUT)
+# Additional step # Show this in the logs within the backend-flask app (STDOUT) # This is used when andrew debug why the logs wasn't being sent to HoneyComb because he used different API key
 simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
 provider.add_span_processor(simple_processor)
 
