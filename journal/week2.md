@@ -62,3 +62,32 @@ with tracer.start_as_current_span("home-activites-mock-data"):
 All observabilty platforms has standard for sending data. then opentelemetry made a standard and all
 platforms used it now even AWS x-rays use it now.
 
+- when setting any env like honecompo api key and then using docker compose up from
+  VScode UI, it won't pick up the env because it is set in other terminal.<br>
+*SOLVING THE ISSUE:*
+- either put the env in gp env and close the workspace and open a new one.
+- or use docker compose from the same termianl.
+
+
+## Homework Challenges
+## HoneyComb
+### Add UserID Attribute inside a Custom Span 
+
+- Added uuid inside `home_activities.py`
+- we get uuid from results list of dicts, so every time a random user get picked and sent.
+```py
+random_user = randint(0,2)
+uuid = results[random_user]['uuid'] 
+span.set_attribute("app.uuid", uuid)
+```
+Reasons for choosing UserID as Attribute:
+- To Know which user made a request.
+- To solve user issue by Quering a trace by uuid to know where the problem happend
+- To dignose latency per user.
+
+### Run Custom Queries in Honeycomb and Save Them
+- Run this custom query: Visualized BY Max(duration) (Latency) Grouped BY app.uuid
+- Saved the resulting query to a Board to retreive it later.
+
+
+
