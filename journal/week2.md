@@ -89,5 +89,6 @@ Reasons for choosing UserID as Attribute:
 - Run this custom query: Visualized BY Max(duration) (Latency) Grouped BY app.uuid
 - Saved the resulting query to a Board to retreive it later.
 
+![image](https://user-images.githubusercontent.com/83673888/221825939-b4475806-41e6-422b-b97b-8b87aa5815c9.png)
 
 
