@@ -56,6 +56,6 @@ with tracer.start_as_current_span("home-activites-mock-data"):
 
 
 **Important Notes from Live Stream**:
-- Why Open telementary exist?<br>
-All observabilty platforms has standard for sending data. then open elemerty made a standard and all
+- Why opentelemetry exist?<br>
+All observabilty platforms has standard for sending data. then opentelemetry made a standard and all
 platforms used it now even AWS x-rays use it now
