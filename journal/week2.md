@@ -51,8 +51,10 @@ with tracer.start_as_current_span("home-activites-mock-data"):
 - Custom fields are prefix with app so we could find them easily like `"app.now"`
 
 **Run queries to explore traces within Honeycomb.io**
+![image](https://user-images.githubusercontent.com/83673888/221773086-9cec5304-7418-4f3e-9bf7-dfc58d0b65b3.png)
 
 **Explore attributes of our custom span**
+![image](https://user-images.githubusercontent.com/83673888/221773115-fdc28c31-830c-4c61-9c25-441bf9eaf80a.png)
 
 
 **Important Notes from Live Stream**:
