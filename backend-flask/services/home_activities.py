@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 from opentelemetry import trace
-
+from random import randint
 tracer = trace.get_tracer("home.Activities")
 
 class HomeActivities:
@@ -50,6 +50,12 @@ class HomeActivities:
         'replies': []
       }
       ]
+      
+      random_user = randint(0,2)
+      uuid = results[random_user]['uuid'] 
+      span.set_attribute("app.uuid", uuid)
+
+
       span.set_attribute("app.results_length", len(results))
 
     return results
