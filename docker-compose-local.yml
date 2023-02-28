@@ -4,15 +4,18 @@ services:
     environment:
       FRONTEND_URL: "*"
       BACKEND_URL: "*"
+      OTEL_SERVICE_NAME: 'backend-flask'
+      OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+      OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
     build: ./backend-flask
     ports:
       - "4567:4567"
     healthcheck: # will check URL every {interval} After {start_period} for number of {retries}
       test: wget --no-verbose --tries=1 --spider http://localhost:4567/api/activities/home || exit 1 # if wget cmd failed, will execute {exit 1}
-      interval: 20s # no. seconds between executing the health check after the start_period.
-      retries: 2 # no. of consecutive checks that failed to declare unhealth container.
-      start_period: 20s # no. of seconds before starting health checks.
-      timeout: 5s # no. of seconds to wait for a health check to complete before considering it a failure.
+      interval: 30s # no. seconds between executing the health check after the start_period.
+      retries: 3 # no. of consecutive checks that failed to declare unhealth container.
+      start_period: 30s # no. of seconds before starting health checks.
+      timeout: 20s # no. of seconds to wait for a health check to complete before considering it a failure.
     volumes:
       - ./backend-flask:/backend-flask
   
@@ -23,15 +26,15 @@ services:
       REACT_APP_BACKEND_URL: "http://127.0.0.1:4567"
     build:
       context: ./frontend-react-js
-      dockerfile: Dockerfile.one-stage
+      dockerfile: Dockerfile.node-node
     ports:
       - "3000:3000"
     healthcheck:
       test: curl --fail http://localhost:3000 || exit 1
-      interval: 20s
-      retries: 2
-      start_period: 20s
-      timeout: 10s
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 20s
     # volumes:
     #   - ./frontend-react-js:/frontend-react-js
 
