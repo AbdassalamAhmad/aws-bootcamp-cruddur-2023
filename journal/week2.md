@@ -48,27 +48,14 @@ with tracer.start_as_current_span("home-activites-mock-data"):
     now = datetime.now(timezone.utc).astimezone()
     span.set_attribute("app.now", now.isoformat()) # this app.now attribute will show inside this span "home-activites-mock-data" , its data is the time now in ISO foramt.
 ```
-- custom fields are prefix with app so we could find them easily like `"app.now"`
+- Custom fields are prefix with app so we could find them easily like `"app.now"`
 
-- explore our traces & include screenshot here of some traces and with library that is the home.Activities
+**Run queries to explore traces within Honeycomb.io**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Explore attributes of our custom span**
 
 
 **Important Notes from Live Stream**:
-- why Open telementary exist:
-all observabilty platforms has standard for sending data. then open elemerty made a standard and all
+- Why Open telementary exist?<br>
+All observabilty platforms has standard for sending data. then open elemerty made a standard and all
 platforms used it now even AWS x-rays use it now
