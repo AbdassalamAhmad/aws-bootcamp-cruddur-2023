@@ -68,6 +68,68 @@ platforms used it now even AWS x-rays use it now.
 - either put the env in gp env and close the workspace and open a new one.
 - or use docker compose from the same termianl.
 
+## AWS CloudWatch Logs
+### Install WatchTower and Import It in the Code
+- Add to the `requirements.txt`
+```sh
+watchtower
+```
+
+- Imported libraries into `app.py`
+
+```
+import watchtower
+import logging
+from time import strftime
+```
+### Write a Custom Logger to Send Application Log Data to CloudWatch Log Group.
+- Init CloudWatch Logs
+```py
+# Configuring Logger to Use CloudWatch
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+# the next line will setup log group inside CloudWatch named cruddur
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+# this is how we do logs 
+LOGGER.info("test log from app.py")
+```
+- This will log ERRORS to CloudWatch
+```py
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
+```
+- Set the env var in backend-flask for `docker-compose-gitpod.yml`
+
+```yml
+      AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+```
+- Finally, add a custom logging in `home_activities.py`, and edit a logger variable as follow
+```py
+# home_activities.py  
+  def run(logger):
+    logger.info("HomeActivities")
+
+# app.py
+@app.route("/api/activities/home", methods=['GET'])
+def data_home():
+  data = HomeActivities.run(logger=LOGGER)
+  return data, 200
+```
+**Commented the logs to avoid spend because I'll be using Rollbar and HoneyComb**<br>
+**Proof of work**
+
+
+
+
+
 ## Rollbar
 ### Integrate Rollbar for Error Logging
 - Followed  Andrew's repo for instructions on how to implement Rollbar [Andrew's repo rollbar](https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-2/journal/week2.md#rollbar).
@@ -81,10 +143,6 @@ platforms used it now even AWS x-rays use it now.
 ![image](https://user-images.githubusercontent.com/83673888/222150782-17b93837-54a1-442f-9d88-533e00dcb599.png)
 > See the error and solve it
 ![image](https://user-images.githubusercontent.com/83673888/222150930-87162598-8dbf-4c1a-9f98-bae6c0e74484.png)
-
-
-
-
 
 
 ## Homework Challenges
