@@ -76,8 +76,11 @@ platforms used it now even AWS x-rays use it now.
 
 ### Trigger an error and observe it
 - Removed the return of the function from `home_activities.py` file.
-- See the error.
 **Proof of work**
+> Erorrs Logging
+![image](https://user-images.githubusercontent.com/83673888/222150782-17b93837-54a1-442f-9d88-533e00dcb599.png)
+> See the error and solve it
+![image](https://user-images.githubusercontent.com/83673888/222150930-87162598-8dbf-4c1a-9f98-bae6c0e74484.png)
 
 
 
