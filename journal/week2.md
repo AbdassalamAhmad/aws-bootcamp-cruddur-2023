@@ -125,6 +125,7 @@ def data_home():
 ```
 **Commented the logs to avoid spend because I'll be using Rollbar and HoneyComb**<br>
 **Proof of work**
+![image](https://user-images.githubusercontent.com/83673888/222212007-204bc4f0-7efb-4d60-aebb-ce7f7955479a.png)
 
 
 
