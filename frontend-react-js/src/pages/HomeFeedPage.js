@@ -7,6 +7,8 @@ import ActivityFeed from '../components/ActivityFeed';
 import ActivityForm from '../components/ActivityForm';
 import ReplyForm from '../components/ReplyForm';
 
+import { trace, context, } from '@opentelemetry/api';
+
 // [TODO] Authenication
 import Cookies from 'js-cookie'
 
@@ -53,6 +55,18 @@ export default function HomeFeedPage() {
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
+
+    const tracer = trace.getTracer();
+    const rootSpan = tracer.startActiveSpan('document_load', span => {
+      //start span when navigating to page
+      span.setAttribute('pageUrlwindow', window.location.href);
+      window.onload = (event) => {
+        // ... do loading things
+        // ... attach timing information
+        span.end(); //once page is loaded, end the span
+      };
+    
+    });
 
     loadData();
     checkAuth();
