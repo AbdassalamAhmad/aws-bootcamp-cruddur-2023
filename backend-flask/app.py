@@ -23,6 +23,22 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
+# CloudWatch Logs ----
+import watchtower
+import logging
+from time import strftime
+
+# Configuring Logger to Use CloudWatch
+# LOGGER = logging.getLogger(__name__)
+# LOGGER.setLevel(logging.DEBUG)
+# console_handler = logging.StreamHandler()
+# # the next line will setup log group inside CloudWatch named cruddur
+# cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+# LOGGER.addHandler(console_handler)
+# LOGGER.addHandler(cw_handler)
+# # this is how we do logs 
+# LOGGER.info("test log from app.py")
+
 # Rollbar ------
 import os
 import rollbar
@@ -60,6 +76,13 @@ cors = CORS(
   allow_headers="content-type,if-modified-since",
   methods="OPTIONS,GET,HEAD,POST"
 )
+
+# This will log errors to CloudWatch
+# @app.after_request
+# def after_request(response):
+#    timestamp = strftime('[%Y-%b-%d %H:%M]')
+#    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+#    return response
 
 # Rollbar init----------
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
