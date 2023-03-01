@@ -71,6 +71,14 @@ platforms used it now even AWS x-rays use it now.
 
 ## Homework Challenges
 ## HoneyComb
+
+### Trying to Instrument Honeycomb for the frontend-application to observe network latency between frontend and backend[NOT FINISHED]
+- I have managed to implement front-end tracing and it send a span once I open the home page.
+- I wasn't be able to put front & back end together because I need more time to figure this out. (need to learn 3 more tools)
+> [commit details](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/fa4e4246c5d62d3cf886fbf0d71032ba49d73dd1)
+
+
+
 ### Add UserID Attribute inside a Custom Span 
 
 - Added uuid inside `home_activities.py`
