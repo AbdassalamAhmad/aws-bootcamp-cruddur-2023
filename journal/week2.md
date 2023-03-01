@@ -68,6 +68,21 @@ platforms used it now even AWS x-rays use it now.
 - either put the env in gp env and close the workspace and open a new one.
 - or use docker compose from the same termianl.
 
+## Rollbar
+### Integrate Rollbar for Error Logging
+- Followed  Andrew's repo for instructions on how to implement Rollbar [Andrew's repo rollbar](https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-2/journal/week2.md#rollbar).
+- Here is my work in [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/1a177ad7ae0ec3844f709c6bb47e02877b08ae27)
+- I've also exported my credentials of rollbar and put them inside gitpod envs.
+
+### Trigger an error and observe it
+- Removed the return of the function from `home_activities.py` file.
+- See the error.
+**Proof of work**
+
+
+
+
+
 
 ## Homework Challenges
 ## HoneyComb
