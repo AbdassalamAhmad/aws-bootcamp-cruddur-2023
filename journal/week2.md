@@ -148,6 +148,7 @@ aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rul
 
 ### Observe X-Ray traces within the AWS Console
 **proof of work**
+![image](https://user-images.githubusercontent.com/83673888/222731020-f5ee2edb-a94f-45e3-8892-4a393a3ac018.png)
 
 
 > See My Implementation here [commit details]()
