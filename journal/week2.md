@@ -146,7 +146,11 @@ aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rul
       AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
 ```
 
+### Observe X-Ray traces within the AWS Console
+**proof of work**
 
+
+> See My Implementation here [commit details]()
 
 
 **Important Note from AWS X-Ray Video**:
