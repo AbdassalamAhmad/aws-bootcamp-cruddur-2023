@@ -68,6 +68,92 @@ platforms used it now even AWS x-rays use it now.
 - either put the env in gp env and close the workspace and open a new one.
 - or use docker compose from the same termianl.
 
+## AWS X-RAY
+### Instrument AWS X-Ray into Back-End Flask Application
+```sh
+export AWS_REGION="eu-south-1"
+gp env AWS_REGION="eu-south-1"
+```
+
+- Add to the `requirements.txt` and install it using `pip install -r requirements.txt`.
+
+```py
+aws-xray-sdk
+```
+
+- Add to `app.py` the import and configureation of x-rays.
+
+```py
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+# above lines should be above app Flask.
+app = Flask(__name__)
+# next line should be after app Flask.
+XRayMiddleware(app, xray_recorder)
+```
+- Run this command to create a log group inside AWS X-Ray (CcloudWatch Logs).
+```sh
+aws xray create-group \
+   --group-name "Cruddur" \
+   --filter-expression "service(\"backend-flask\")"
+```
+- Added `aws/json/xray-sampling-rule.json`.
+
+```json
+{
+  "SamplingRule": {
+      "RuleName": "Cruddur",
+      "ResourceARN": "*",
+      "Priority": 9000,
+      "FixedRate": 0.1,
+      "ReservoirSize": 5,
+      "ServiceName": "backend-flask",
+      "ServiceType": "*",
+      "Host": "*",
+      "HTTPMethod": "*",
+      "URLPath": "*",
+      "Version": 1
+  }
+}
+```
+- Run this command to create a sampling rule that we created above.
+```sh
+aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rule.json.json
+```
+
+### Configure and provision X-Ray daemon within docker-compose and send data back to X-Ray API
+
+- **Two ways for Installing X-Ray**:
+  - The two lines above [this link](https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-2/journal/week2.md#add-deamon-service-to-docker-compose) will install X-Ray manually (not preferred).
+  - The better way is using docker-compose (preferred).
+```yml
+  xray-daemon:
+    image: "amazon/aws-xray-daemon"
+    environment:
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_REGION: "eu-south-1"
+    command:
+      - "xray -o -b xray-daemon:2000"
+    ports:
+      - 2000:2000/udp
+```
+- Add these two env vars to my backend-flask in `docker-compose-gitpod.yml` file
+```yml
+      AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
+      AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
+```
+
+
+
+
+**Important Note from AWS X-Ray Video**:
+- It is better to do any config in aws using CLI instead of AWS UI Console,<br>
+ because they change it a lot. and for you to remember what have you made.
+
+
 ## AWS CloudWatch Logs
 ### Install WatchTower and Import It in the Code
 - Add to the `requirements.txt`
