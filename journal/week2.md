@@ -120,7 +120,7 @@ aws xray create-group \
 ```
 - Run this command to create a sampling rule that we created above.
 ```sh
-aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rule.json.json
+aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rule.json
 ```
 
 ### Configure and provision X-Ray daemon within docker-compose and send data back to X-Ray API
