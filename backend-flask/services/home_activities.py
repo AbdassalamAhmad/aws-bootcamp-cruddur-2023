@@ -5,7 +5,10 @@ tracer = trace.get_tracer("home.Activities")
 
 class HomeActivities:
   def run():
+    # CloudWatch Logs ----
     #logger.info("HomeActivities")
+
+    # HoneyComb ---------
     with tracer.start_as_current_span("home-activites-mock-data"):
       span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()
@@ -51,10 +54,10 @@ class HomeActivities:
       }
       ]
       
+      # HoneyComb ---------
       random_user = randint(0,2)
       uuid = results[random_user]['uuid'] 
       span.set_attribute("app.uuid", uuid)
-
 
       span.set_attribute("app.results_length", len(results))
 
