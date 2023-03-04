@@ -283,3 +283,6 @@ from aws_xray_sdk.core import xray_recorder
         subsegment_2.put_annotation("app_results_length", len(results))
 ```
 **proof of work**
+![image](https://user-images.githubusercontent.com/83673888/222880286-a92c0151-c218-47f6-aa08-90121f77f8eb.png)
+![image](https://user-images.githubusercontent.com/83673888/222880295-0b271f7e-4d65-439e-aa81-532ede6589d4.png)
+
