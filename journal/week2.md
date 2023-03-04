@@ -69,12 +69,8 @@ platforms used it now even AWS x-rays use it now.
 - or use docker compose from the same termianl.
 
 ## AWS X-RAY
-### Instrument AWS X-Ray into Back-End Flask Application
-```sh
-export AWS_REGION="eu-south-1"
-gp env AWS_REGION="eu-south-1"
-```
 
+### Instrument AWS X-Ray into Back-End Flask Application
 - Add to the `requirements.txt` and install it using `pip install -r requirements.txt`.
 
 ```py
@@ -93,7 +89,7 @@ app = Flask(__name__)
 # next line should be after app Flask.
 XRayMiddleware(app, xray_recorder)
 ```
-- Run this command to create a log group inside AWS X-Ray (CcloudWatch Logs).
+- Run this command to create a log group inside AWS X-Ray (CloudWatch Logs).
 ```sh
 aws xray create-group \
    --group-name "Cruddur" \
@@ -160,6 +156,7 @@ aws xray create-sampling-rule --cli-input-json file://aws/json/xray-sampling-rul
 
 
 ## AWS CloudWatch Logs
+
 ### Install WatchTower and Import It in the Code
 - Add to the `requirements.txt`
 ```sh
@@ -272,3 +269,17 @@ Reasons for choosing UserID as Attribute:
 ![image](https://user-images.githubusercontent.com/83673888/221825939-b4475806-41e6-422b-b97b-8b87aa5815c9.png)
 
 
+## AWS X-RAY
+### Add Segments and SubSegments
+- Added  `xray_recorder` import statement and 2 blocks of code that create two subsegments.
+```py
+# user_activities.py
+from aws_xray_sdk.core import xray_recorder
+    # xray ---
+    with xray_recorder.capture('user_activity_time') as subsegment_1:
+      subsegment_1.put_annotation('time_now', now.isoformat())
+
+      with xray_recorder.capture('user_activity_length') as subsegment_2:
+        subsegment_2.put_annotation("app_results_length", len(results))
+```
+**proof of work**
