@@ -40,7 +40,7 @@ Amplify.configure({
 ```
 
 ## Show Some Components if You Are Logged in Only
-- we will implement these components in these pages `HomeFeedPage.js`, `DesktopNavigation.js`, `ProfileInfo.js`, `DesktopSidebar.js`.
+- Implemented some components in these pages `HomeFeedPage.js`, `DesktopNavigation.js`, `ProfileInfo.js`, `DesktopSidebar.js`.
 ### HomeFeedPage.js
 - Removed old cookies method for Auth.
 ```js
