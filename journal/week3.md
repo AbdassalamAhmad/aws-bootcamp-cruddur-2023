@@ -140,3 +140,85 @@ import { Auth } from 'aws-amplify';
     return false
   }
 ```
+- Encountered an error when authenticating because the user created manually from AWS Cognito Console wasn't **"Verified"**
+- Run this command to solve the issue (confirming the password)
+```sh
+aws cognito-idp admin-set-user-password --username 864ec250-50f1-70e9-9698-10aea66c0e5b --password Test123- --user-pool-id eu-south-1_VVTlAbxEV --permanent
+```
+
+- Added **"name"** to our user manually form cognito console.
+![]()
+
+### Signup Page
+- Clearly, we shouldn't be creating users by ourselves manually so we will create a signup page so that users can automatically signup and create content.
+- Removed old cookies method for Auth.
+```js
+import { Auth } from 'aws-amplify';
+
+const [errors, setErrors] = React.useState('');
+
+const onsubmit = async (event) => {
+    event.preventDefault();
+    setErrors('')
+    console.log('username',username)
+    console.log('email',email)
+    console.log('name',name)
+    try {
+        const { user } = await Auth.signUp({
+        username: email,
+        password: password,
+        attributes: {
+            name: name,
+            email: email,
+            preferred_username: username,
+        },
+        autoSignIn: { // optional - enables auto sign in after user is confirmed
+            enabled: true,
+        }
+        });
+        console.log(user);
+        window.location.href = `/confirm?email=${email}`
+    } catch (error) {
+        console.log(error);
+        setErrors(error.message)
+    }
+    return false
+}
+```
+
+### ConfirmationPage
+- Removed old cookies method for Auth.
+```js
+import { Auth } from 'aws-amplify';
+
+const resend_code = async (event) => {
+    setErrors('')
+    try {
+      await Auth.resendSignUp(email);
+      console.log('code resent successfully');
+      setCodeSent(true)
+    } catch (err) {
+      // does not return a code
+      // does cognito always return english
+      // for this to be an okay match?
+      console.log(err)
+      if (err.message == 'Username cannot be empty'){
+        setCognitoErrors("You need to provide an email in order to send Resend Activiation Code")   
+      } else if (err.message == "Username/client id combination not found."){
+        setCognitoErrors("Email is invalid or cannot be found.")   
+      }
+    }
+}
+
+const onsubmit = async (event) => {
+    event.preventDefault();
+    setErrors('')
+    try {
+      await Auth.confirmSignUp(email, code);
+      window.location.href = "/"
+      console.log("hey, your account is confirmed now go to the signin page and log in to see your home feedback.")
+    } catch (error) {
+      setErrors(error.message)
+    }
+    return false
+  }
