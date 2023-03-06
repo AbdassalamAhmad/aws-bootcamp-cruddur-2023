@@ -35,6 +35,7 @@ export default function SignupPage() {
         }
         });
         console.log(user);
+        localStorage.setItem('email', email); // Store email in local storage to use it in confirmation & signin page
         window.location.href = `/confirm?email=${email}`
     } catch (error) {
         console.log(error);

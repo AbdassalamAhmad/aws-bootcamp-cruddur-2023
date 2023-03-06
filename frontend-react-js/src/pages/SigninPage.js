@@ -12,6 +12,16 @@ export default function SigninPage() {
   const [password, setPassword] = React.useState('');
   const [errors, setErrors] = React.useState('');
 
+
+  // Get email from the signup page where we stored the email in localStorage
+  React.useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+      setEmail(storedEmail);
+      localStorage.removeItem('email'); // Remove the email from local storage
+    }
+  }, []);
+
   const onsubmit = async (event) => {
     setErrors('')
     event.preventDefault();

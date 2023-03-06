@@ -40,18 +40,26 @@ export default function ConfirmationPage() {
     }
 }
 
-const onsubmit = async (event) => {
-  event.preventDefault();
-  setErrors('')
-  try {
-    await Auth.confirmSignUp(email, code);
-    window.location.href = "/"
-    console.log("hey, your account is confirmed now go to the signin page and log in to see your home feedback.")
-  } catch (error) {
-    setErrors(error.message)
+  // Get email from the signup page where we stored the email in localStorage
+  React.useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+      setEmail(storedEmail);
+    }
+  }, []);
+
+  const onsubmit = async (event) => {
+    event.preventDefault();
+    setErrors('')
+    try {
+      await Auth.confirmSignUp(email, code);
+      window.location.href = "/"
+      console.log("hey, your account is confirmed now go to the signin page and log in to see your home feedback.")
+    } catch (error) {
+      setErrors(error.message)
+    }
+    return false
   }
-  return false
-}
 
   let el_errors;
   if (errors){
@@ -65,6 +73,8 @@ const onsubmit = async (event) => {
   } else {
     code_button = <button className="resend" onClick={resend_code}>Resend Activation Code</button>;
   }
+
+
 
   React.useEffect(()=>{
     if (params.email) {
