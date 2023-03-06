@@ -54,7 +54,6 @@ export default function ConfirmationPage() {
     try {
       await Auth.confirmSignUp(email, code);
       window.location.href = "/signin"
-      console.log("hey, your account is confirmed now go to the signin page and log in to see your home feedback.")
     } catch (error) {
       setErrors(error.message)
     }
