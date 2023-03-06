@@ -146,8 +146,8 @@ import { Auth } from 'aws-amplify';
 aws cognito-idp admin-set-user-password --username 864ec250-50f1-70e9-9698-10aea66c0e5b --password Test123- --user-pool-id eu-south-1_VVTlAbxEV --permanent
 ```
 
-- Added **"name"** to our user manually form cognito console.
-![]()
+- Added **"name"** to our user manually form cognito console.<br>
+![image](https://user-images.githubusercontent.com/83673888/223082761-a6b8a5af-d869-4c01-93aa-1b0c1b631af1.png)
 
 ### Signup Page
 - Clearly, we shouldn't be creating users by ourselves manually so we will create a signup page so that users can automatically signup and create content.
