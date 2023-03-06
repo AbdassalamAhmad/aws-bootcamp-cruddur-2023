@@ -2,7 +2,7 @@
 ## Required Homework
 
 ## Provision Amazon Cognito User Pool using AWS UI (Console)
-- I've put a directory named [week-3-cognito-AWS-UI]() inside `journal/assets` folder that has steps of creating the Cognito User Pool.
+- I've put a directory named [week-3-cognito-AWS-UI](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/tree/main/journal/assets/week-3-cognito-AWS-UI) inside `journal/assets` folder that has steps of creating the Cognito User Pool.
 
 ## Install and Configure Amplify Client-Side Library for Amazon Congito.
 ### Installation
