@@ -11,7 +11,7 @@
 npm i aws-amplify --save
 ```
 ### Configuration
-- Passed my env vars to `docker-compose` file
+- Passed my env vars to `docker-compose` file to the `front-end` service
 ```yml
     REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
     REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
@@ -83,7 +83,7 @@ React.useEffect(()=>{
 
 ### DesktopNavigation.js
 - We'll rewrite `DesktopNavigation.js` so that it conditionally shows links in the left hand column
-on whether you are logged in or not. (Already Done for me)
+on whether you are logged in or not. (Already Done)
 
 ### ProfileInfo.js
 - Removed old cookies method for Auth.
