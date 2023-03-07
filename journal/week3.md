@@ -251,3 +251,43 @@ const onsubmit_confirm_code = async (event) => {
   return false
 }
 ```
+
+## Homework Challenges
+- Made sure `Resend Activation Code` works in the `Confirmation Page` after sign up.
+![]()
+- Filled the email automatically inside `Confirmation Page` & `Signin page` once you fill signup form.
+```js
+// SignupPage.js
+// Store email in local storage to use it in confirmation & signin page.
+localStorage.setItem('email', email); 
+```
+
+```js
+    // ConfirmationPage.js
+    // Get email from the signup page where we stored the email in localStorage
+    React.useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+        setEmail(storedEmail);
+    }
+    }, []);
+```
+
+```js
+    // SigninPage.js
+    // Get email from the signup page where we stored the email in localStorage
+    React.useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    if (storedEmail) {
+        setEmail(storedEmail);
+        localStorage.removeItem('email'); // Remove the email from local storage
+    }
+    }, []);
+```
+
+- Transitioned the user after confirming the account to the `Signin page` automatically instead of home page.
+```js
+// ConfirmationPage.js
+window.location.href = "/signin"
+```
+
