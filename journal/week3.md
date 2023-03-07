@@ -254,7 +254,8 @@ const onsubmit_confirm_code = async (event) => {
 
 ## Homework Challenges
 - Made sure `Resend Activation Code` works in the `Confirmation Page` after sign up.
-![]()
+![image](https://user-images.githubusercontent.com/83673888/223314869-2204e0ae-38af-4a39-be0b-0be2a2d994ab.png)
+
 - Filled the email automatically inside `Confirmation Page` & `Signin page` once you fill signup form.
 ```js
 // SignupPage.js
