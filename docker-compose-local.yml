@@ -24,6 +24,10 @@ services:
       - backend-flask
     environment:
       REACT_APP_BACKEND_URL: "http://127.0.0.1:4567"
+      REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
+      REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
+      REACT_APP_AWS_USER_POOLS_ID: "eu-south-1_VVTlAbxEV"
+      REACT_APP_CLIENT_ID: "7mph1qpebk969vkggt14g8l59d"
     build:
       context: ./frontend-react-js
       dockerfile: Dockerfile.node-node
