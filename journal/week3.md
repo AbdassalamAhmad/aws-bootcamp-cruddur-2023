@@ -270,12 +270,78 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 ```
+- Imported this library in `requirements.txt`
+```txt
+Flask-AWSCognito
+```
 
 - Used some code from this library `Flask-AWSCognito` that will handle auth with cognito serverside.
+```py
+# app.py
+from lib.cognito_jwt_token import CognitoJwtToken, extract_access_token, TokenVerifyError
 
+# Cognito Auth Serverside init
+cognito_jwt_token = CognitoJwtToken(
+  user_pool_id=os.getenv("AWS_COGNITO_USER_POOL_ID"), 
+  user_pool_client_id=os.getenv("AWS_COGNITO_USER_POOL_CLIENT_ID"),
+  region=os.getenv("AWS_DEFAULT_REGION")
+)
 
+def data_home():
+  access_token = extract_access_token(request.headers)
+  try:
+    claims = cognito_jwt_token.verify(access_token)
+    # authenicatied request
+    app.logger.debug("authenicated")
+    app.logger.debug(claims)
+    # to show who is the signed in user
+    app.logger.debug(claims['username'])
+    data = HomeActivities.run(cognito_user_id=claims['username'])
+  except TokenVerifyError as e:
+    # unauthenicatied request
+    app.logger.debug(e)
+    app.logger.debug("unauthenicated")
+    data = HomeActivities.run()
+  return data, 200
+```
 
+- Imported this file `cognito_jwt_token.py` from the library and edit it to work in our app, here is the final version [cognito_jwt_token.py](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/backend-flask/lib/cognito_jwt_token.py)
 
+- Added this code to see if we're logged in by showing us more data in our `home feed page`
+```py
+# home_activities.py
+
+# pass cognito_user_id to see if the user is auth.ed or not
+def run(cognito_user_id=None):
+# ...
+# ...
+      if cognito_user_id != None:
+        extra_crud = {
+          'uuid': '248959df-3079-4947-b847-9e0892d1bab4',
+          'handle':  'Lore',
+          'message': 'My dear brother, it the humans that are the problem',
+          'created_at': (now - timedelta(hours=1)).isoformat(),
+          'expires_at': (now + timedelta(hours=12)).isoformat(),
+          'likes': 1042,
+          'replies': []
+        }
+        results.insert(0,extra_crud)
+```
+
+- Added these two env vars to make our 3rd library work under back-end service in `docker-compose-gitpod.yml`
+```yml
+      AWS_COGNITO_USER_POOL_ID: "eu-south-1_****"
+      AWS_COGNITO_USER_POOL_CLIENT_ID: "7mph1qpebk****"
+```
+
+- Removed the access tocken after we sign out by adding this line to `ProfileInfo.js`
+```js
+    try {
+        await Auth.signOut({ global: true });
+        window.location.href = "/"
+        localStorage.removeItem("access_token")
+    }
+```
 
 
 
