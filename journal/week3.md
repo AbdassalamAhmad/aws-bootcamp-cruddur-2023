@@ -252,6 +252,35 @@ const onsubmit_confirm_code = async (event) => {
 }
 ```
 
+## Authenticating Server Side
+- Add in the `HomeFeedPage.js` a header to pass along the access token
+```js
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+  }
+```
+
+- Replace this code in `app.py` which will allow the Authorization header and expose it
+```py
+cors = CORS(
+  app, 
+  resources={r"/api/*": {"origins": origins}},
+  headers=['Content-Type', 'Authorization'], 
+  expose_headers='Authorization',
+  methods="OPTIONS,GET,HEAD,POST"
+)
+```
+
+- Used some code from this library `Flask-AWSCognito` that will handle auth with cognito serverside.
+
+
+
+
+
+
+
+
+
 ## Homework Challenges
 - Made sure `Resend Activation Code` works in the `Confirmation Page` after sign up.
 ![image](https://user-images.githubusercontent.com/83673888/223314869-2204e0ae-38af-4a39-be0b-0be2a2d994ab.png)
