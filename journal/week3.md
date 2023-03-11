@@ -344,6 +344,8 @@ def run(cognito_user_id=None):
 ```
 
 
+### Improved UI and Setup Theme CSS Variables
+- I followed Andrew tutorial on [this video](https://www.youtube.com/watch?v=m9V4SmJWoJU&list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&index=44) and made same changes, here is my [commit details](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/387279f360d3ec22d7b6ce8fd24671ba1e3d191d)
 
 
 
