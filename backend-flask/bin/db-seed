@@ -2,7 +2,7 @@
 
 CYAN='\033[1;36m'
 NO_COLOR='\033[0m'
-LABEL="db-schema-load"
+LABEL="db-seed"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
 # Get the absolute path of this script
@@ -10,8 +10,8 @@ ABS_PATH=$(readlink -f "$0")
 # Get the parent of the parent path of this script (back-end folder)
 PARENT_DIR="$(dirname "$(dirname "$ABS_PATH")")"
 
-schema_path="$PARENT_DIR/db/schema.sql"
-echo $schema_path
+seed_path="$PARENT_DIR/db/seed.sql"
+echo $seed_path
 
 if [ "$1" = "prod" ]; then
   echo "Running in production mode"
@@ -20,4 +20,4 @@ else
   URL=$CONNECTION_URL
 fi
 
-psql $URL cruddur < $schema_path
+psql $URL cruddur < $seed_path
