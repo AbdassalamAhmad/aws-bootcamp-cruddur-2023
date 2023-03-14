@@ -66,7 +66,7 @@ cruddur=#
 
 ## Use Bash Scripts
 - Reason for using Bash Scripts: we will use schema file often, So we will be able to turn down the database, set up the database, load the schema.
-- Created three scripts `db-create`, `db-drop`, `db-schema-load`
+- Created these scripts `db-create`, `db-drop`, `db-schema-load`, `db-connect`, `db-seed`, `db-sessions`, `db-setup`.
 - Give the scipts the required permissions `rwxr--r--`
 ```sh
 chmod 744 db-create db-drop db-schema-load
@@ -87,3 +87,17 @@ psql $NO_DB_CONNECTION_URL -c "drop database cruddur;"
 - we are using `sed` to replace `/cruddur` with nothing (remove it); -> because we can't drop the database while we're connecting to it.
 - we used a backslash `\` to escape the next forward slash `/`
 
+#### `db-create`
+- To create a database.
+#### `db-schema-load`
+- To load the schema script.
+#### `db-connect`
+- To connect to the database.
+#### `db-seed`
+- To fill the database with some mock data to try some commands on the database.
+#### `db-sessions`
+- 
+#### `db-setup`
+- To run all of the scripts.
+
+> See [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/4e7d426b7e3fd2b70088cef6654fdddf1bc471c5) for more details on the scripts.
