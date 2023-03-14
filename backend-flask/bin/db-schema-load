@@ -11,12 +11,13 @@ ABS_PATH=$(readlink -f "$0")
 PARENT_DIR="$(dirname "$(dirname "$ABS_PATH")")"
 
 schema_path="$PARENT_DIR/db/schema.sql"
-echo $schema_path
+
 
 if [ "$1" = "prod" ]; then
-  echo "Running in production mode"
+  echo "---------  Running in production mode  ---------"
   URL=$PROD_CONNECTION_URL
 else
+  echo "---------  Running in local mode  --------"
   URL=$CONNECTION_URL
 fi
 

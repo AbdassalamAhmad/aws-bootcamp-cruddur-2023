@@ -59,7 +59,7 @@ gp env PROD_CONNECTION_URL="postgresql://postgres::***@cruddur-db-instance.cw13e
 ```
 - To try the authenticating with local DB
 ```sh
-psql CONNECTION_URL
+psql $CONNECTION_URL
 # The output (which means you're in).
 cruddur=#
 ```
@@ -69,7 +69,7 @@ cruddur=#
 - Created these scripts `db-create`, `db-drop`, `db-schema-load`, `db-connect`, `db-seed`, `db-sessions`, `db-setup`.
 - Give the scipts the required permissions `rwxr--r--`
 ```sh
-chmod 744 db-create db-drop db-schema-load
+chmod 744 db-create db-drop db-schema-load db-connect db-seed db-sessions db-setup
 ```
 
 #### `db-drop`
@@ -101,3 +101,46 @@ psql $NO_DB_CONNECTION_URL -c "drop database cruddur;"
 - To run all of the scripts.
 
 > See [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/4e7d426b7e3fd2b70088cef6654fdddf1bc471c5) for more details on the scripts.
+
+### Create Tables Inside Cruddur Database
+- public is schema or namespace which comes with any database by default.
+- we will be using different schemas like public,..etc when having multiple subdomains and each one will connect to one schema. (OR Databse per Domain i'm not sure yet)
+```sql
+CREATE TABLE public.users (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  display_name text,
+  handle text,
+  cognito_user_id text,
+  created_at TIMESTAMP default current_timestamp NOT NULL
+);
+
+CREATE TABLE public.activities (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_uuid UUID NOT NULL,
+  message text NOT NULL,
+  replies_count integer DEFAULT 0,
+  reposts_count integer DEFAULT 0,
+  likes_count integer DEFAULT 0,
+  reply_to_activity_uuid integer,
+  expires_at TIMESTAMP,
+  created_at TIMESTAMP default current_timestamp NOT NULL
+);
+```
+- The meaning of `uuid` inside `public.activities` table is a unique id for each activity.
+- The meaning of `user_uuid` inside `public.activities` table is the user unique id who did that activity.
+
+### Seed Data into our Databse
+```sql
+INSERT INTO public.users (display_name, handle, cognito_user_id)
+VALUES
+  ('Andrew Brown', 'andrewbrown' ,'MOCK'),
+  ('Andrew Bayko', 'bayko' ,'MOCK');
+
+INSERT INTO public.activities (user_uuid, message, expires_at)
+VALUES
+  (
+    (SELECT uuid from public.users WHERE users.handle = 'andrewbrown' LIMIT 1),
+    'This was imported as seed data!',
+    current_timestamp + interval '10 day'
+  )
+```
