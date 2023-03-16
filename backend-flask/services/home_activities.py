@@ -3,7 +3,7 @@ from opentelemetry import trace
 from random import randint
 tracer = trace.get_tracer("home.Activities")
 
-from lib.db import pool
+from lib.db import pool, query_wrap_array
 
 
 
@@ -18,8 +18,8 @@ class HomeActivities:
     #   now = datetime.now(timezone.utc).astimezone()
     #   span.set_attribute("app.now", now.isoformat()) # this app.now attribute will show inside this span "home-activites-mock-data" , its data is the time now in ISO foramt.
 
-
-
+# Here we were having mock-up results to play with using monitoring tools.
+# Now we replaced them with real api call:
 
     # # HoneyComb ---------
     # random_user = randint(0,2)
@@ -28,4 +28,31 @@ class HomeActivities:
 
     # span.set_attribute("app.results_length", len(results))
 
-    return results
+
+    sql = query_wrap_array("""
+      SELECT
+        activities.uuid,
+        users.display_name,
+        users.handle,
+        activities.message,
+        activities.replies_count,
+        activities.reposts_count,
+        activities.likes_count,
+        activities.reply_to_activity_uuid,
+        activities.expires_at,
+        activities.created_at
+      FROM public.activities
+      LEFT JOIN public.users ON users.uuid = activities.user_uuid
+      ORDER BY activities.created_at DESC
+    """)
+
+    with pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(sql)
+        # this will return a tuple
+        # the first field being the data
+        json = cur.fetchone()
+    return json[0]
+
+
+    # return results

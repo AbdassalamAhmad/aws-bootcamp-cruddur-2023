@@ -162,3 +162,29 @@ psycopg[binary]
 psycopg[pool]
 ```
 - The benefit of using connection pooling is to reuse some connection from finished users to current users.
+- **NOTE:** we will be using raw SQL commands because it is a lot faster check [this_time](https://youtu.be/Sa2iB33sKFo?list=PLBfufR7vyJJ7k25byhRXJldB5AiwgNnWv&t=2064)
+
+- Add this code to `lib/db.py`
+```py
+from psycopg_pool import ConnectionPool
+# ....
+
+def query_wrap_array(template):
+  sql = f"""
+  (SELECT COALESCE(array_to_json(array_agg(row_to_json(array_row))),'[]'::json) FROM (
+  {template}
+  ) array_row);
+  """
+  return sql
+# ....
+```
+- The previous function will do the following:
+  - {template} will have SQL Command (statement)
+  - convert every row from SQL to json then we put it in array then we put that array into json again.
+  - `'[]'::json` will return empty json if previous return empty.
+  - here is the tuble we get back from `print (json)`
+    ```json
+    ([{'uuid': '93a4b885-e070-4454-802e-d4a76bb0b6db', 'user_uuid': '041baa78-3ebb-44c9-b9c8-b99df06faba2', 'message': 'This was imported as seed data!', 'replies_count': 0, 'reposts_count': 0, 'likes_count': 0, 'reply_to_activity_uuid': None, 'expires_at': '2023-03-26T04:42:45.500728', 'created_at': '2023-03-16T04:42:45.500728'}],)
+    ```
+  - As you say the first part of the tuble is what we want because the second one is empty so we `return json[0]`
+ 
