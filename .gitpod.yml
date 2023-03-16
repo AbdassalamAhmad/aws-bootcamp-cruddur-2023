@@ -17,12 +17,12 @@ tasks:
       sudo apt update
       sudo apt install -y postgresql-client-13 libpq-dev
 
-  - name: Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
-    before: |
+      # Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
       gp sync-await aws-cli
       export GITPOD_IP=$(curl ifconfig.me)
-      gp env GITPOD_IP=$(curl ifconfig.me) 
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
+
+
 
   - name: Install Front-End dependencies
     before: |
