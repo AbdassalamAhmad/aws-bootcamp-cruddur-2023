@@ -213,3 +213,12 @@ aws ec2 modify-security-group-rules \
       gp env GITPOD_IP=$(curl ifconfig.me) 
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
 ```
+- Change compose Connection URL
+```yml
+      CONNECTION_URL: "$PROD_CONNECTION_URL"
+```
+- Load the schema into our production RDS.
+```sh
+./backend-flask/bin/db-schema-load prod
+```
+
