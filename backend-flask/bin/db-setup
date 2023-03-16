@@ -1,5 +1,5 @@
 #! /usr/bin/bash
--e # stop if it fails at any point
+-e # stop excuting this script if it fails at any script of below so don't continue.
 
 CYAN='\033[1;36m'
 NO_COLOR='\033[0m'
