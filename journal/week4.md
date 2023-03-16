@@ -188,3 +188,28 @@ def query_wrap_array(template):
     ```
   - As you say the first part of the tuble is what we want because the second one is empty so we `return json[0]`
  
+## Connect to Production RDS
+- Start RDS.
+- Edit `db-connect` script to accept prod RDS Connect URL.
+- Edit security group to accept traffic comming from gitpod ID.
+- Used this command to modify our IP inside SG because everytime we lunch gitpod, its IP will change.
+```sh
+export DB_SG_ID="sg-03612a80ef9ea9c32"
+gp env DB_SG_ID="sg-03612a80ef9ea9c32"
+export DB_SG_RULE_ID="sgr-000875ae83d6cc004"
+gp env DB_SG_RULE_ID="sgr-000875ae83d6cc004"
+```
+- Put this command in `rds-update-sg-rule` script.
+```sh
+aws ec2 modify-security-group-rules \
+    --group-id $DB_SG_ID \
+    --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=gitpod_from_command,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
+```
+- Add this code to `.gitpod.yml` to extract the new IP everytime we open a workspace and put it inside `rds-update-sg-rule` script.
+```yml
+  - name: Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
+    before: |
+      export GITPOD_IP=$(curl ifconfig.me)
+      gp env GITPOD_IP=$(curl ifconfig.me) 
+      source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
+```
