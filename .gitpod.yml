@@ -22,8 +22,6 @@ tasks:
       export GITPOD_IP=$(curl ifconfig.me)
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
 
-
-
   - name: Install Front-End dependencies
     before: |
       cd ./frontend-react-js

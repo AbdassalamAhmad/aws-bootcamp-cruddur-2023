@@ -205,12 +205,11 @@ aws ec2 modify-security-group-rules \
     --group-id $DB_SG_ID \
     --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={Description=gitpod_from_command,IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
 ```
-- Add this code to `.gitpod.yml` to extract the new IP everytime we open a workspace and put it inside `rds-update-sg-rule` script.
+- Add this code to `.gitpod.yml` under postgres to extract the new IP everytime we open a workspace and put it inside `rds-update-sg-rule` script.
 ```yml
-  - name: Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
-    before: |
+      # Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
+      gp sync-await aws-cli
       export GITPOD_IP=$(curl ifconfig.me)
-      gp env GITPOD_IP=$(curl ifconfig.me) 
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
 ```
 - Change compose Connection URL
