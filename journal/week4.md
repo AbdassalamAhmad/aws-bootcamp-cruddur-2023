@@ -96,7 +96,7 @@ psql $NO_DB_CONNECTION_URL -c "drop database cruddur;"
 #### `db-seed`
 - To fill the database with some mock data to try some commands on the database.
 #### `db-sessions`
-- 
+- To see what connections are open, the postgreSQL extention we use seems to make the connection up and doesn't close them.
 #### `db-setup`
 - To run all of the scripts.
 
@@ -144,3 +144,21 @@ VALUES
     current_timestamp + interval '10 day'
   )
 ```
+
+## SQL Commands
+- First, connect to our databse using `db-connect` script.
+```sql
+-- This command will display data correctly in "Expand Mode"
+\x auto 
+-- will show all of the activities we put using seed script.
+SELECT * FROM activities;
+```
+
+### SQL Driver Psycopg (V3)
+- This driver will enable us to use python script to run SQL commands of our DB.
+- Install the driver using `pip` by adding it to `requirementes.txt`
+```txt
+psycopg[binary]
+psycopg[pool]
+```
+- The benefit of using connection pooling is to reuse some connection from finished users to current users.
