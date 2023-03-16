@@ -8,6 +8,7 @@ tasks:
       unzip -o awscliv2.zip
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
+      gp sync-done aws-cli
 
   - name: install postgres client
     before: |
@@ -18,6 +19,7 @@ tasks:
 
   - name: Get the IP of GITPOD and put it inside `rds-update-sg-rule` script
     before: |
+      gp sync-await aws-cli
       export GITPOD_IP=$(curl ifconfig.me)
       gp env GITPOD_IP=$(curl ifconfig.me) 
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds-update-sg-rule"
