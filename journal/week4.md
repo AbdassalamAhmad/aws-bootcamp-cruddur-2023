@@ -249,7 +249,8 @@ CREATE TABLE public.users (
 ```
 - Run `db-schema-load` bash script to load the schema into our RDS.
 #### proof of Lambda works after signing up and checking rds DB.
-![image](https://user-images.githubusercontent.com/83673888/226085902-770230cb-38e4-41f2-b92c-43a31b2ef120.png)
+![image](https://user-images.githubusercontent.com/83673888/226085967-ebf5b614-0511-48f0-9f46-aac5ff7bd3df.png)
+
 
 
 
