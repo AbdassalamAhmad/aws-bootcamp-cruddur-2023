@@ -221,3 +221,32 @@ aws ec2 modify-security-group-rules \
 ./backend-flask/bin/db-schema-load prod
 ```
 
+## Create a Lambda Function 
+- Function Name: cruddur-post-confirmation
+- Runtime: Python 3.8
+- Architecture: x86_64
+- Enable VPC: 2 subnets, SG allows 5432 and ALL (default SG).
+
+### Lambda Function Inside Configuration
+- Created [cruddur-post-confirmation.py](TO-DO) which has our lambda code.
+- Configure ENV Vars `CONNECTION_URL: postgresql://root:****@cruddur-db-instance.cw13efqq4djw.eu-south-1.rds.amazonaws.com:5432/cruddur`
+- Added Lambda Layer (additional code) using this ARN `arn:aws:lambda:eu-south-1:898466741470:layer:psycopg2-py38:1`, check out [this repo](https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-4/journal/week4.md#development) for more details.
+
+- Added Lambda Trigger from cognito (user pool properties)
+- Choose sign-up Trigger type then choose Post confirmation trigger then Assign OUR Lambda function.
+
+- Edit `schema.sql` to include email and changed handle to preferred_username.
+```sql
+CREATE TABLE public.users (
+  uuid UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  display_name text NOT NULL,
+  --handle text NOT NULL, handle is same as preferred_username
+  preferred_username text NOT NULL, -- same as handle, make sure to check lambda function
+  email text NOT NULL,
+  cognito_user_id text NOT NULL,
+  created_at TIMESTAMP default current_timestamp NOT NULL
+);
+```
+- Run `db-schema-load` bash script to load the schema into our RDS.
+
+
