@@ -228,7 +228,7 @@ aws ec2 modify-security-group-rules \
 - Enable VPC: 2 subnets, SG allows 5432 and ALL (default SG).
 
 ### Lambda Function Inside Configuration
-- Created [cruddur-post-confirmation.py](TO-DO) which has our lambda code.
+- Created [cruddur-post-confirmation.py](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/blob/main/aws/lambdas/cruddur-post-confirmation.py) which has our lambda code.
 - Configure ENV Vars `CONNECTION_URL: postgresql://root:****@cruddur-db-instance.cw13efqq4djw.eu-south-1.rds.amazonaws.com:5432/cruddur`
 - Added Lambda Layer (additional code) using this ARN `arn:aws:lambda:eu-south-1:898466741470:layer:psycopg2-py38:1`, check out [this repo](https://github.com/omenking/aws-bootcamp-cruddur-2023/blob/week-4/journal/week4.md#development) for more details.
 
