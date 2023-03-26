@@ -252,5 +252,87 @@ CREATE TABLE public.users (
 ![image](https://user-images.githubusercontent.com/83673888/226085967-ebf5b614-0511-48f0-9f46-aac5ff7bd3df.png)
 
 
+## Implement Create Activity && Link it with RDS
+### Edit Lambda Code to Prevent SQL Injections && More Readable.
 
+> [Commit Details](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/65db74bcfe3ff0cac181b5d13851c7565eaf7346)
 
+### **Issue Solved** user handle was hard-coded
+**Solution:**
+- removed the hard coded value and replace it with `request.json["user_handle"]`
+```py
+# app.py
+def data_activities():
+  ######user_handle  = 'andrewbrown'######
+  user_handle = request.json["user_handle"]
+  message = request.json['message']
+  ttl = request.json['ttl']
+```
+- added `user_handle={user}` so that it could be passed to `components/ActivityForm.js` 
+```js
+// pages/HomeFeedPage.js
+        <ActivityForm  
+          user_handle={user}
+          popped={popped}
+          setPopped={setPopped} 
+          setActivities={setActivities} 
+```
+- add `user_handle` that gets its value from the above code.
+```js
+// components/ActivityForm.js
+        body: JSON.stringify({
+          user_handle: props.user_handle.handle,
+          message: message,
+          ttl: ttl
+        }),
+```
+
+### Create a Folder that has SQL Code Separately to be Referenced in `db.py`, `create_activity.py`, `home_activities.py`
+- `create.sql`:  will create the SQL ENTRY that has these values `user_uuid, message, expires_at` into our DB once `crud` button is pressed.
+```sql
+-- create.sql
+INSERT INTO public.activities (user_uuid, message, expires_at)
+VALUES (
+  (SELECT uuid 
+    FROM public.users 
+    WHERE users.handle = %(handle)s
+    LIMIT 1
+  ), %(message)s, %(expires_at)s
+) 
+RETURNING uuid;
+```
+- **`home.sql`**: will GET the `activities` table and join it with `users` table to get `handle` and `display_name` columns `ON` condidtion of using the same user UUID column.
+```sql
+SELECT
+  activities.uuid, users.display_name, users.handle, activities.message, activities.replies_count,
+  activities.reposts_count, activities.likes_count, activities.reply_to_activity_uuid,
+  activities.expires_at, activities.created_at
+FROM public.activities
+LEFT JOIN public.users ON users.uuid = activities.user_uuid
+ORDER BY activities.created_at DESC
+```
+
+- **`create.sql`**: will create the activity and return its uuid which is unique per activity, to be passed to `CreateActivity.query_object_activity(uuid)` to get the object that will be displayed in json format (handled by front-end).
+```sql
+INSERT INTO public.activities (
+  user_uuid, message, expires_at)
+VALUES (
+  (SELECT uuid FROM public.users WHERE users.handle = %(handle)s LIMIT 1),
+  %(message)s, %(expires_at)s
+) 
+RETURNING uuid;
+```
+
+- **`object.sql`**: to convert sql to json BY getting the uuid from `CreateActivity.create_activity(user_handle,message,expires_at)` and passing it to `CreateActivity.query_object_activity(uuid)` so that it can be passed to front-end as json to be displayed.
+```sql
+SELECT
+  activities.uuid, users.display_name, users.handle, 
+  activities.message, activities.created_at, activities.expires_at
+FROM public.activities
+INNER JOIN public.users ON users.uuid = activities.user_uuid 
+WHERE activities.uuid = %(uuid)s
+```
+
+## Workflow of <kbd>Creating Activity</kbd>:
+
+ 
