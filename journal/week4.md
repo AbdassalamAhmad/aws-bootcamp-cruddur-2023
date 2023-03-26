@@ -334,16 +334,31 @@ WHERE activities.uuid = %(uuid)s
 ```
 
 ## Workflow of **Creating an Activity**:
+- Create an activity from UI.
 ![image](https://user-images.githubusercontent.com/83673888/227766102-0068027e-466c-4efb-ba5b-322381ab9e75.png)
+- POST the content of `user_handle`, `message`, `ttl` to backend.
 ![image](https://user-images.githubusercontent.com/83673888/227766165-081bcb98-34c5-4bc1-9d74-ed0be6ae15cb.png)
+- Pass the above values we get from front-end to `CreateActivity.run` function.
 ![image](https://user-images.githubusercontent.com/83673888/227766287-1eecb6b2-f34a-4db4-bb76-d6c6bdd9a2cd.png)
+- Here are the steps that will get executed in order.
+- <kbd>1</kbd> `run` will call two functions <kbd>2</kbd> `CreateActivity.createactivity` and <kbd>3</kbd> `CreateActivity.query_object_activity`
 ![image](https://user-images.githubusercontent.com/83673888/227766645-817ee81a-e1ff-4d95-9327-26fe39e010f5.png)
+- Inside <kbd>2</kbd> we have <kbd>2-1</kbd> `db.template` that will get `create.sql`.
 ![image](https://user-images.githubusercontent.com/83673888/227766713-f212835e-9e9e-43c6-916c-2c039d516157.png)
 ![image](https://user-images.githubusercontent.com/83673888/227766754-f2554fb1-9f5d-42f5-a9cb-8e7566ea2b67.png)
+- Once we have our sql we will execute <kbd>2-2</kbd> `db.query_commit` which will commit our activity to our RDS prod database.
+- `db.query_commit` will return `returning_id` which is `uuid` of the activity.
+- This `uuid` will be used on <kbd>3</kbd> `CreateActivity.query_object_activity(uuid)` to get a json object instead of an array.
 ![image](https://user-images.githubusercontent.com/83673888/227766840-e8f3f44b-5a01-499a-83df-bcb8fb8b73aa.png)
+- <kbd>3-1</kbd> `object.sql` will get **the actual activity that will be shown at the end** in array format.
 ![image](https://user-images.githubusercontent.com/83673888/227767411-5e3fdd97-4d77-4e8f-bd48-a96d11ec1165.png)
-![image](https://user-images.githubusercontent.com/83673888/227767029-380be240-67a5-4c85-ba5d-165f4044b1dc.png)
+- <kbd>3-2-1</kbd> `query_wrap_object` will wrap the array so that when it is commited in <kbd>3-2</kbd> it will have a json format
 ![image](https://user-images.githubusercontent.com/83673888/227767104-99b2051b-1022-4877-be24-f22efa3dd746.png)
+- <kbd>3-2</kbd> `query_object_json` will get the wrapped sql and connect to our RDS and excute the SQL command.
+- You can see the output of the SQL After executing it in the next picture.
+![image](https://user-images.githubusercontent.com/83673888/227767029-380be240-67a5-4c85-ba5d-165f4044b1dc.png)
+
+
 ![image](https://user-images.githubusercontent.com/83673888/227767186-cb8b08e7-fd28-4c0c-a8d7-4da9b6a524c6.png)
 ![image](https://user-images.githubusercontent.com/83673888/227767219-8ae67775-03af-4eab-8fa4-70143b7dc2dd.png)
 ![image](https://user-images.githubusercontent.com/83673888/227767274-1f45fde1-5f6e-42dc-a37b-6ec4043ad172.png)
