@@ -333,6 +333,33 @@ INNER JOIN public.users ON users.uuid = activities.user_uuid
 WHERE activities.uuid = %(uuid)s
 ```
 
-## Workflow of <kbd>Creating Activity</kbd>:
+## Workflow of **Creating an Activity**:
+![image](https://user-images.githubusercontent.com/83673888/227766102-0068027e-466c-4efb-ba5b-322381ab9e75.png)
+![image](https://user-images.githubusercontent.com/83673888/227766165-081bcb98-34c5-4bc1-9d74-ed0be6ae15cb.png)
+![image](https://user-images.githubusercontent.com/83673888/227766287-1eecb6b2-f34a-4db4-bb76-d6c6bdd9a2cd.png)
+![image](https://user-images.githubusercontent.com/83673888/227766645-817ee81a-e1ff-4d95-9327-26fe39e010f5.png)
+![image](https://user-images.githubusercontent.com/83673888/227766713-f212835e-9e9e-43c6-916c-2c039d516157.png)
+![image](https://user-images.githubusercontent.com/83673888/227766754-f2554fb1-9f5d-42f5-a9cb-8e7566ea2b67.png)
+![image](https://user-images.githubusercontent.com/83673888/227766840-e8f3f44b-5a01-499a-83df-bcb8fb8b73aa.png)
+![image](https://user-images.githubusercontent.com/83673888/227767411-5e3fdd97-4d77-4e8f-bd48-a96d11ec1165.png)
+![image](https://user-images.githubusercontent.com/83673888/227767029-380be240-67a5-4c85-ba5d-165f4044b1dc.png)
+![image](https://user-images.githubusercontent.com/83673888/227767104-99b2051b-1022-4877-be24-f22efa3dd746.png)
+![image](https://user-images.githubusercontent.com/83673888/227767186-cb8b08e7-fd28-4c0c-a8d7-4da9b6a524c6.png)
+![image](https://user-images.githubusercontent.com/83673888/227767219-8ae67775-03af-4eab-8fa4-70143b7dc2dd.png)
+![image](https://user-images.githubusercontent.com/83673888/227767274-1f45fde1-5f6e-42dc-a37b-6ec4043ad172.png)
+
+
+## Workflow of **Showing The Activity**:
+![image](https://user-images.githubusercontent.com/83673888/227767820-be347092-b638-48fd-abf0-4869890023ee.png)
+![image](https://user-images.githubusercontent.com/83673888/227767633-fa679f3f-d7a3-4035-88ab-5dd4fc26c336.png)
+![image](https://user-images.githubusercontent.com/83673888/227767666-e19b32a6-8695-4304-8891-a167e7a8ceb0.png)
+![image](https://user-images.githubusercontent.com/83673888/227767784-41a4dda4-cb3d-49f5-a56e-34818c885d0b.png)
+![image](https://user-images.githubusercontent.com/83673888/227767913-c63fcd30-3679-487f-a60b-84aba5f383f7.png)
+
+
+
+
+
+
 
  
