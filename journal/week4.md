@@ -352,31 +352,34 @@ WHERE activities.uuid = %(uuid)s
 ![image](https://user-images.githubusercontent.com/83673888/227766840-e8f3f44b-5a01-499a-83df-bcb8fb8b73aa.png)
 - <kbd>3-1</kbd> `object.sql` will get **the actual activity that will be shown at the end** in array format.
 ![image](https://user-images.githubusercontent.com/83673888/227767411-5e3fdd97-4d77-4e8f-bd48-a96d11ec1165.png)
-- <kbd>3-2-1</kbd> `query_wrap_object` will wrap the array so that when it is commited in <kbd>3-2</kbd> it will have a json format
+- <kbd>3-2-1</kbd> `query_wrap_object` will wrap the array so that when it is commited in <kbd>3-2</kbd> it will have a json format.
 ![image](https://user-images.githubusercontent.com/83673888/227767104-99b2051b-1022-4877-be24-f22efa3dd746.png)
-- <kbd>3-2</kbd> `query_object_json` will get the wrapped sql and connect to our RDS and excute the SQL command.
+- <kbd>3-2</kbd> `query_object_json` will get the wrapped sql and connect to our RDS and excute the SQL command as aJSON format.
 - You can see the output of the SQL After executing it in the next picture.
 ![image](https://user-images.githubusercontent.com/83673888/227767029-380be240-67a5-4c85-ba5d-165f4044b1dc.png)
 - Here is the output, I've removed `COALESCE( ,'{{}}'::json)` part in this screenshot, this part just handle NULL values.
 ![image](https://user-images.githubusercontent.com/83673888/227785004-cb70e031-eb73-4eff-a2e9-4c619802357e.png)
 
-
+- Now after getting the `json_object` from `CreateActivity.query_object_activity(uuid)`, we will put it onside our `model`.
 ![image](https://user-images.githubusercontent.com/83673888/227767186-cb8b08e7-fd28-4c0c-a8d7-4da9b6a524c6.png)
+- <kbd>1-Z</kbd> `model[data]` will have our json object and it will be posted to our front-end.
 ![image](https://user-images.githubusercontent.com/83673888/227767219-8ae67775-03af-4eab-8fa4-70143b7dc2dd.png)
 ![image](https://user-images.githubusercontent.com/83673888/227767274-1f45fde1-5f6e-42dc-a37b-6ec4043ad172.png)
+- <kbd>1-Z-2</kbd> Here we can see the value of `data` which has the content of `model[data]` from our back-end.
+
 
 
 ## Workflow of **Showing The Activity**:
+- when we are on the `/` page we are actually on `HomeFeedPage`.
+
+- <kbd>S-0</kbd> Once we hit the home page, an API call is fired to the back-end that will check authentication and then get back with the data from `HomeActivities.run()`
+- <kbd>S-1</kbd> Here is the code that will get executed once we hit home page.
 ![image](https://user-images.githubusercontent.com/83673888/227767820-be347092-b638-48fd-abf0-4869890023ee.png)
+- <kbd>S-2</kbd> here we will fetch the data using SQL template
 ![image](https://user-images.githubusercontent.com/83673888/227767633-fa679f3f-d7a3-4035-88ab-5dd4fc26c336.png)
+<kbd>S-2</kbd> Here is the SQL template that will fetch all of the messages from our database and order them in descending odrer.
 ![image](https://user-images.githubusercontent.com/83673888/227767666-e19b32a6-8695-4304-8891-a167e7a8ceb0.png)
+- <kbd>S-3</kbd> and <kbd>S-3-1</kbd> return a JSON object from our database that has all of our messages from all users.
 ![image](https://user-images.githubusercontent.com/83673888/227767784-41a4dda4-cb3d-49f5-a56e-34818c885d0b.png)
+- Finally <kbd>S-Z</kbd> after we return `data` from back-end it will be sent to front-end to be show using `setActivities(resJson)` line.
 ![image](https://user-images.githubusercontent.com/83673888/227767913-c63fcd30-3679-487f-a60b-84aba5f383f7.png)
-
-
-
-
-
-
-
- 
