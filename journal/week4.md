@@ -366,18 +366,21 @@ WHERE activities.uuid = %(uuid)s
 ![image](https://user-images.githubusercontent.com/83673888/227767219-8ae67775-03af-4eab-8fa4-70143b7dc2dd.png)
 ![image](https://user-images.githubusercontent.com/83673888/227767274-1f45fde1-5f6e-42dc-a37b-6ec4043ad172.png)
 - <kbd>1-Z-2</kbd> Here we can see the value of `data` which has the content of `model[data]` from our back-end.
+![image](https://user-images.githubusercontent.com/83673888/227806004-8a053860-8c37-4739-8db5-b599d7819de7.png)
+
 
 
 
 ## Workflow of **Showing The Activity**:
 - when we are on the `/` page we are actually on `HomeFeedPage`.
-
+![image](https://user-images.githubusercontent.com/83673888/227806022-0720e8d0-b85c-4be0-ab2f-9e3a31ffd039.png)
 - <kbd>S-0</kbd> Once we hit the home page, an API call is fired to the back-end that will check authentication and then get back with the data from `HomeActivities.run()`
+![image](https://user-images.githubusercontent.com/83673888/227806033-f5d3ce3d-e311-49b8-9029-1c73f43be5c3.png)
 - <kbd>S-1</kbd> Here is the code that will get executed once we hit home page.
 ![image](https://user-images.githubusercontent.com/83673888/227767820-be347092-b638-48fd-abf0-4869890023ee.png)
-- <kbd>S-2</kbd> here we will fetch the data using SQL template
+- <kbd>S-2</kbd> here we will fetch the data using SQL template.<br>
 ![image](https://user-images.githubusercontent.com/83673888/227767633-fa679f3f-d7a3-4035-88ab-5dd4fc26c336.png)
-<kbd>S-2</kbd> Here is the SQL template that will fetch all of the messages from our database and order them in descending odrer.
+- <kbd>S-2</kbd> Here is the SQL template that will fetch all of the messages from our database and order them in descending odrer.
 ![image](https://user-images.githubusercontent.com/83673888/227767666-e19b32a6-8695-4304-8891-a167e7a8ceb0.png)
 - <kbd>S-3</kbd> and <kbd>S-3-1</kbd> return a JSON object from our database that has all of our messages from all users.
 ![image](https://user-images.githubusercontent.com/83673888/227767784-41a4dda4-cb3d-49f5-a56e-34818c885d0b.png)
