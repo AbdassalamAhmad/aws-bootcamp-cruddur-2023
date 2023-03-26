@@ -357,6 +357,8 @@ WHERE activities.uuid = %(uuid)s
 - <kbd>3-2</kbd> `query_object_json` will get the wrapped sql and connect to our RDS and excute the SQL command.
 - You can see the output of the SQL After executing it in the next picture.
 ![image](https://user-images.githubusercontent.com/83673888/227767029-380be240-67a5-4c85-ba5d-165f4044b1dc.png)
+- Here is the output, I've removed `COALESCE( ,'{{}}'::json)` part in this screenshot, this part just handle NULL values.
+![image](https://user-images.githubusercontent.com/83673888/227785004-cb70e031-eb73-4eff-a2e9-4c619802357e.png)
 
 
 ![image](https://user-images.githubusercontent.com/83673888/227767186-cb8b08e7-fd28-4c0c-a8d7-4da9b6a524c6.png)
