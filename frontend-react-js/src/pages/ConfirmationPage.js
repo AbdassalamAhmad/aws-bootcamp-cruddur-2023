@@ -75,11 +75,11 @@ export default function ConfirmationPage() {
 
 
 
-  React.useEffect(()=>{
-    if (params.email) {
-      setEmail(params.email)
-    }
-  }, [])
+  // React.useEffect(()=>{
+  //   if (params.email) {
+  //     setEmail(params.email)
+  //   }
+  // }, [])
 
   return (
     <article className="confirm-article">
