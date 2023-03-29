@@ -334,6 +334,7 @@ WHERE activities.uuid = %(uuid)s
 ```
 
 ## Workflow of **Creating an Activity**:
+I published The following content in [this article](https://abdassalam.hashnode.dev/workflow-from-creating-activity-to-show-it-in-home-page)
 - Create an activity from UI.
 ![image](https://user-images.githubusercontent.com/83673888/227766102-0068027e-466c-4efb-ba5b-322381ab9e75.png)
 - POST the content of `user_handle`, `message`, `ttl` to backend.
