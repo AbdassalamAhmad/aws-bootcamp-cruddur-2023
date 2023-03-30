@@ -7,8 +7,8 @@ printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
 # Get the absolute path of this script
 ABS_PATH=$(readlink -f "$0")
-# Get the parent of the parent path of this script (back-end folder)
-PARENT_DIR="$(dirname "$(dirname "$ABS_PATH")")"
+# Get the parent of the parent of the parent path of this script (back-end folder)
+PARENT_DIR="$(dirname "$(dirname "$(dirname "$ABS_PATH")")")"
 
 schema_path="$PARENT_DIR/db/schema.sql"
 
