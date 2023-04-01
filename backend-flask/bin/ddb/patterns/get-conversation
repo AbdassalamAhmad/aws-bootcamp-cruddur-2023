@@ -21,7 +21,7 @@ message_group_uuid = "5ae290ed-55d1-47a0-bc6d-fe2bc2700399"
 query_params = {
   'TableName': table_name,
   'ScanIndexForward': False,
-  'Limit': 30,
+  'Limit': 20,
   'ReturnConsumedCapacity': 'TOTAL',
   'KeyConditionExpression': 'pk = :pk AND begins_with(sk,:year)',
   #'KeyConditionExpression': 'pk = :pk AND sk BETWEEN :start_date AND :end_date',
