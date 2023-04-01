@@ -9,7 +9,7 @@ attrs = {
 }
 
 if "prod" in sys.argv:
-  attr = {}
+  attrs = {}
 
 ddb = boto3.client('dynamodb', **attrs)
 
