@@ -138,3 +138,19 @@ def get_my_user_uuid():
 - Filter the output query to a specific year OR a duration of specific time (month, week,..etc)
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/c3e6ffff2e0e41f1e8e490e0c1e8416dba3caf07)
+
+## Create a script `backend-flask/bin/db/update_cognito_user_ids` to update cognito user id in our db
+### ADD Env Variable
+- This env var will be used in `backend-flask/bin/cognito/list-users`
+```bash
+export AWS_COGNITO_USER_POOL_ID="****"
+gp env AWS_COGNITO_USER_POOL_ID="***"
+```
+- The idea behind `backend-flask/bin/cognito/list-users` and `backend-flask/bin/db/update_cognito_user_ids` is to fill cognito user id for the users in our database that are (hard-coded and seeded into the DB).<br>
+- I think that this script is useless **for production usecase**, because once we create a user from UI, a lambda will be triggered and will update our database with cognito new users.
+- We will need it for local development only to grap cognito user id instead of hard-coding it.
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/10f83b31e20f6bd611ee0d9d6eba231edb9b6150)
+
+
+## Implement Access Pattern B (List Messages)
+
