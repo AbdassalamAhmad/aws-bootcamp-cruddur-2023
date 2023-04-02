@@ -61,7 +61,7 @@ class Db:
     no_color = '\033[0m'
     # Print the cyan line
     print(f'{cyan}{"2-" * 80}{no_color}')
-    print(f"is_returning_id: {is_returning_id}", flush=True)
+
 
     # try:
     #   with self.pool.connection() as conn:

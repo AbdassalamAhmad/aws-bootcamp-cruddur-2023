@@ -37,11 +37,14 @@ def get_my_user_uuid():
 my_user_uuid = get_my_user_uuid()
 print(f"my-uuid: {my_user_uuid}")
 
+year = str(datetime.now().year)
 # define the query parameters
 query_params = {
   'TableName': table_name,
-  'KeyConditionExpression': 'pk = :pk',
+  'ScanIndexForward': False,
+  'KeyConditionExpression': 'pk = :pk AND begins_with(sk,:year)',
   'ExpressionAttributeValues': {
+    ':year': {'S': year },
     ':pk': {'S': f"GRP#{my_user_uuid}"}
   },
   'ReturnConsumedCapacity': 'TOTAL'
@@ -50,8 +53,25 @@ query_params = {
 # query the table
 response = ddb.query(**query_params)
 
+
 # print the items returned by the query
 print(json.dumps(response, sort_keys=True, indent=2))
+
+# The reason for reversing is to get the messages from oldest to newest.
+items = response['Items']
+items.reverse()
+
+results = []
+for item in items:
+  last_sent_at = item['sk']['S']
+  results.append({
+    'uuid': item['message_group_uuid']['S'],
+    'display_name': item['user_display_name']['S'],
+    'handle': item['user_handle']['S'],
+    'message': item['message']['S'],
+    'created_at': last_sent_at
+  })
+print(results)
 
 # print the consumed capacity
 print()
