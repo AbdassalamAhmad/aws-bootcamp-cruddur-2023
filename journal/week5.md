@@ -153,7 +153,7 @@ gp env AWS_COGNITO_USER_POOL_ID="***"
 
 
 ## Implement Access Pattern B (List Messages)
-First we did use local rds and dynamodb connection url and aws endpoint.
-> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/10f83b31e20f6bd611ee0d9d6eba231edb9b6150)
+- First we did use local rds and dynamodb connection url and aws endpoint in `docker-compose.yml`& `backend-flask/lib/db.py`.
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/c04377b1679fca2d3504b132ad5b7840374aaf26)
 
 
