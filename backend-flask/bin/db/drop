@@ -5,5 +5,17 @@ NO_COLOR='\033[0m'
 LABEL="db-drop"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
-NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<<"$CONNECTION_URL")
-psql $NO_DB_CONNECTION_URL -c "drop database IF EXISTS cruddur;"
+if [ "$1" = "prod" ]; then
+  echo "Running in production mode"
+
+  # Terminate any active connections to the database
+  psql $PROD_CONNECTION_URL -c "SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'cruddur' AND pid <> pg_backend_pid();"
+  
+  POSTGRES_DB_CONNECTION_URL=$(sed 's/\/cruddur/\/postgres/g' <<<"$PROD_CONNECTION_URL")
+  URL=$POSTGRES_DB_CONNECTION_URL
+else
+  NO_DB_CONNECTION_URL=$(sed 's/\/cruddur//g' <<<"$CONNECTION_URL")
+  URL=$NO_DB_CONNECTION_URL
+fi
+
+psql $URL -c "drop database IF EXISTS cruddur;"
