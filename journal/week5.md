@@ -199,5 +199,67 @@ and the `return`.
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/9801525781fe0469f69bb292cff190b7bc482a08)
 
 
+## Implement Access Pattern D (Create a Message in Existing Conversation)
+### Clinet-Side
+- Pass the message_group_uuid in the POST request because it is required for our access pattern to know where to add this message.
+- The reason for `json.handle` is to pass the handle if we want to create a new conversation (Pattern C), so we use the handle to create a message group with that user.
+```js
+// components\MessageForm.js
+let json = { 'message': message }
+if (params.handle) {
+  json.handle = params.handle
+} else {
+  json.message_group_uuid = params.message_group_uuid
+}
+```
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/76315b4d8dd2361d1245ad02be57b0631a8beaf6)
 
+### Server-Side (Python)
+#### `app.py`
+- Did the normal auth as usual to get the `cognito_user_uuid`.
+- Edit `app.py` to get the `message_group_uuid`, `handle`, `message` from the front-end and pass it to `CreateMessage.py` service
+```python
+# app.py
+@app.route("/api/messages", methods=['POST','OPTIONS'])
+@cross_origin()
+def data_create_message():
+  message_group_uuid   = request.json.get('message_group_uuid',None)
+  user_receiver_handle = request.json.get('handle',None)
+  message = request.json['message'] # the reason why `.get` isn't here because this field is mandatory but others depend on the mode, so they might be empty so they return error that's why we used `.get`
+  model = CreateMessage.run(
+    mode="update",
+    message=message,
+    message_group_uuid=message_group_uuid,
+    cognito_user_id=cognito_user_id
+  )
+```
+#### `create_message.py`
+- Get users from sql template and seperate them to sender and receiver.
+- Depending on the mode, it create message group or update the existing conversation with a new message.
+- It uses `ddb.py` `data = Ddb.create_message()` function to create the message.
 
+#### `backend-flask/db/sql/users/create_message_users.sql`
+- This SQL code will get two users (sender = cognito_user_id & reciever = user_receiver_handle).
+Then it will add a new column with title kind and it seperate sender user by putting `sender` in its value
+and the receiver by putting `recv` in its value.
+```sql
+SELECT 
+  users.uuid,
+  users.display_name,
+  users.handle,
+  CASE users.cognito_user_id = %(cognito_user_id)s
+  WHEN TRUE THEN
+    'sender'
+  WHEN FALSE THEN
+    'recv'
+  ELSE
+    'other'
+  END as kind
+FROM public.users
+WHERE
+  users.cognito_user_id = %(cognito_user_id)s
+  OR 
+  users.handle = %(user_receiver_handle)s
+```
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/12f25e44554367b613f2a8256eb658980db64d52)
