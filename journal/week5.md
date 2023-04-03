@@ -152,8 +152,52 @@ gp env AWS_COGNITO_USER_POOL_ID="***"
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/10f83b31e20f6bd611ee0d9d6eba231edb9b6150)
 
 
-## Implement Access Pattern B (List Messages)
+## Implement Access Pattern B (List Conversations for The Logged-in User)
 - First we did use local rds and dynamodb connection url and aws endpoint in `docker-compose.yml`& `backend-flask/lib/db.py`.
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/c04377b1679fca2d3504b132ad5b7840374aaf26)
+
+- Edit `data_message_groups():` function inside `app.py` to get the user id from cognito from JWT (after signing in).
+- Edit `message_groups.py` , we need to have access to our database to get the uuid corresponding to the cognito user id.
+- Create `backend-flask/db/sql/users/uuid_from_cognito_user_id.sql` to return uuid from our database because it is different than the cognito id.
+- Now we have to run  `backend-flask/bin/db/update_cognito_user_ids` script that will fill cognito id with its actual value instead of MOCK from seed data script. 
+**Note**: I had to register with a new email and used the username as andrewbrown SAME AS handle in `seed` script.
+- The Conversations will be listed after getting the uuid which is requierd for our access pattern Using `Ddb.list_message_groups(ddb, my_user_uuid)` function.<br>
+
+- Now we face `401 error` because we aren't authenticated (the tocken isn't passed to all pages)
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/cbd2c62b77fea84a76e2c72777878e6d004969f8)
+
+### Client-Side (Update Bearer Access Token Header)
+- Remove Cookies part from all pages because we use local storage for storing access tocken (I think).
+- Pass the access tocken header to all of the pages.
+- Check Auth using Amplify for all pages using a function we stored in a seperate file `frontend-react-js/src/lib/CheckAuth.js`
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/741f2ef5d167ce3db524fff1dd4ecf062c63c8da)
+
+## Implement Access Pattern A (Click The Conversation to Show Messages)
+### Client-Side
+```js
+// App.js
+    path: "/messages/:message_group_uuid",
+```
+```js
+// MessageGroupPage.js
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`
+```
+- Passed the `message_group_uuid` to the `MessageGroupPage.js` using the params which is a way to access URL parameters.
+
+- for the transition after clicking on a conversation to list messages to work, we need to change the "Click Value".
+So, inside `components/MessageGroupItem.js` we change `if (params.message_group_uuid == props.message_group.uuid)`
+and the `return`.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/049426861dc282536a010da821017ee16cf35bee)
+### Server-Side (Python)
+- Edit `app.py` to verify JWT tocken and get cognito uuid to return our uuid from the sql database
+- Implement `messages.py` to
+  - pass the user id from our database "TO DO" (this step is to do permession check so that only authorized users access the messages, because NOW any one who has the `message_group_uuid` can see it)
+  - pass `message_group_uuid` to our dynamodb table to get all of the messages.
+- Edit `ddp.py` to have `list_messages(client,message_group_uuid):` function ready to list the messages once we have the `message_group_uuid` "ALREADY DONE THAT STEP
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/9801525781fe0469f69bb292cff190b7bc482a08)
+
+
 
 
