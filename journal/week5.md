@@ -212,6 +212,13 @@ if (params.handle) {
   json.message_group_uuid = params.message_group_uuid
 }
 ```
+- `setMessage('');` function will reset the form after creating the message.
+```js
+// components\MessageForm.js
+      if (res.status === 200) {
+        props.setMessages(current => [...current,data]);
+        setMessage('');
+      }
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/76315b4d8dd2361d1245ad02be57b0631a8beaf6)
 
 ### Server-Side (Python)
