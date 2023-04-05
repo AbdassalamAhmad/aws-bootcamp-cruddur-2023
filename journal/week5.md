@@ -402,3 +402,5 @@ environment:
 - Finally, in the DynamoDB console, create a new trigger and select `cruddur-messaging-stream` lambda function.
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/5ad8370c845c721af0a6760169024b053a73a4ce)
+
+> proof of messagin work in PROD 
