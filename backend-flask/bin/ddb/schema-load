@@ -16,35 +16,57 @@ ddb = boto3.client('dynamodb', **attrs)
 table_name = 'cruddur-messages'
 
 response = ddb.create_table(
-    TableName=table_name,
-    AttributeDefinitions=[
-        {
-            'AttributeName': 'pk',
-            'AttributeType': 'S'
-        },        
-        {
-            'AttributeName': 'sk',
-            'AttributeType': 'S'
-        },
-    ],
-    KeySchema=[
-        {
-            'AttributeName': 'pk',
-            'KeyType': 'HASH'
-        },
-        {
-            'AttributeName': 'sk',
-            'KeyType': 'RANGE'
-        },
-    ],
-    # GlobalSecondaryIndexes=[
-    # ],
-    BillingMode='PROVISIONED',
-    ProvisionedThroughput={
-        'ReadCapacityUnits': 5,
-        'WriteCapacityUnits': 5
+  TableName=table_name,
+  AttributeDefinitions=[
+    {
+      'AttributeName': 'message_group_uuid',
+      'AttributeType': 'S'
     },
-    DeletionProtectionEnabled=False
+    {
+      'AttributeName': 'pk',
+      'AttributeType': 'S'
+    },
+    {
+      'AttributeName': 'sk',
+      'AttributeType': 'S'
+    },
+  ],
+  KeySchema=[
+    {
+      'AttributeName': 'pk',
+      'KeyType': 'HASH'
+    },
+    {
+      'AttributeName': 'sk',
+      'KeyType': 'RANGE'
+    },
+  ],
+  GlobalSecondaryIndexes= [{
+    'IndexName':'message-group-sk-index',
+    'KeySchema':[{
+      'AttributeName': 'message_group_uuid',
+      'KeyType': 'HASH'
+    },{
+      'AttributeName': 'sk',
+      'KeyType': 'RANGE'
+    }],
+    'Projection': {
+      'ProjectionType': 'ALL'
+    },
+    'ProvisionedThroughput': {
+      'ReadCapacityUnits': 5,
+      'WriteCapacityUnits': 5
+    },
+  }],
+    StreamSpecification={
+        'StreamEnabled': True,
+        'StreamViewType': 'NEW_IMAGE'
+    },
+  BillingMode='PROVISIONED',
+  ProvisionedThroughput={
+      'ReadCapacityUnits': 5,
+      'WriteCapacityUnits': 5
+  }
 )
 
 print (response)
