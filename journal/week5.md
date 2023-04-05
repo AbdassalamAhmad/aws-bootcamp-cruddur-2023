@@ -219,6 +219,7 @@ if (params.handle) {
         props.setMessages(current => [...current,data]);
         setMessage('');
       }
+```
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/76315b4d8dd2361d1245ad02be57b0631a8beaf6)
 
 ### Server-Side (Python)
@@ -270,3 +271,134 @@ WHERE
 ```
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/12f25e44554367b613f2a8256eb658980db64d52)
+
+## Implement Access Pattern C (Create a Message in NON-Existing Conversation)
+### Clinet-Side
+- Add new URL (new page) to our app to be able to create a new conversation.
+- Import the new page at the top
+```js
+// App.js
+import MessageGroupNewPage from './pages/MessageGroupNewPage';
+{
+  path: "/messages/new/:handle",
+  element: <MessageGroupNewPage />
+},
+```
+#### `components/MessageGroupNewItem.js`
+- The reason for creating this page is to be able to click on the user to send the message to.
+- In the future after you click a person profile and then click on message him ,you will be redirected to this page.
+- In order for this Item to be shown in UI, we need to add it in this page `MessageGroupFeed.js`
+```js
+import MessageGroupNewItem from './MessageGroupNewItem';
+
+  let message_group_new_item;
+  if (props.otherUser) {
+    message_group_new_item = <MessageGroupNewItem user={props.otherUser} />
+  }
+
+      <div className='message_group_feed_collection'>
+          {message_group_new_item}
+```
+
+#### `MessageGroupNewPage.js`
+- It defines two functions, `loadUserShortData` and `loadMessageGroupsData`, which use the fetch API to retrieve data from the backend.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/dad3e28c8656daa39d44de1f9aa31509f27db537)
+
+### Server-Side (SQL & Python)
+- Add new user to our mock database to have a third user who doesn't have existing conversation.
+```sql
+./connect
+
+INSERT INTO public.users (display_name, email, handle, cognito_user_id)
+VALUES ('Londo Londo','Londo@londo.co' , 'londo' ,'MOCK');
+```
+
+#### `app.py`
+- Create new API Endpoint to show some profile information in that new page we created
+```python
+from services.users_short import *
+
+@app.route("/api/users/@<string:handle>/short", methods=['GET'])
+def data_users_short(handle):
+  data = UsersShort.run(handle)
+  return data, 200
+```
+
+- Add a new service `backend-flask/services/users_short.py` that will call this sql template `backend-flask/db/sql/users/short.sql`
+
+```sql
+SELECT
+  users.uuid,
+  users.handle,
+  users.display_name
+FROM public.users
+WHERE 
+  users.handle = %(handle)s
+```
+- That SQL will return display_name,handle,uuid  of that 3rd user (the one we want to message)
+- That data will be pushed back to our new created page using our new created API Endpoint.
+
+#### `create_message.py`
+- When we want to create new conversation through UI we will be on a url of something like this `https://3000-*****.gitpod.io/messages/new/bayko` so that means that we won't pass a message UUID so in `app.py` we will be on mode `create` inside this function
+```py
+# app.py
+    if message_group_uuid == None:
+      # Create for the first time
+      model = CreateMessage.run(
+        mode="create",
+        message=message,
+        cognito_user_id=cognito_user_id,
+        user_receiver_handle=user_receiver_handle
+      )
+```
+- we will use this function
+```py
+# create_message.py
+      elif (mode == "create"):
+        data = Ddb.create_message_group(
+          client=ddb,
+          message=message,
+          my_user_uuid=my_user['uuid'],
+          my_user_display_name=my_user['display_name'],
+          my_user_handle=my_user['handle'],
+          other_user_uuid=other_user['uuid'],
+          other_user_display_name=other_user['display_name'],
+          other_user_handle=other_user['handle']
+        )
+```
+#### `Ddb.create_message_group()`
+- This function will put these items into our DynamoDB as a batchwrite
+```py
+    items = {
+      table_name: [
+        {'PutRequest': {'Item': my_message_group}},
+        {'PutRequest': {'Item': other_message_group}},
+        {'PutRequest': {'Item': message}}
+      ]
+    }
+```
+- It will return the message uuid only and this value will be used in the Front-End to redirect the user to its new created message using this code in the front end 
+
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/4f937c20745fa7022b461fb07fc7b2b29a2f3463)
+
+## Implement Access Pattern E (Update the Message Shown in the Conversation Groups)
+#### `backend-flask/bin/ddb/schema-load`
+- Add GlobalSecondaryIndexes to be able to undex on `message_group_uuid` to update the Message in that `message_group_uuid`.
+- Activate `DynamoDB stream "new image"` from the same script instead of AWS Console.
+
+#### `docker-compose-gitpod.yml`
+- comment out `AWS_ENDPOINT_URL` to work on Production DynamoDB.
+```yml
+environment:
+  # AWS_ENDPOINT_URL: "http://dynamodb-local:8000"
+```
+### Steps in AWS Console
+- In the VPC console, create an endpoint named `cruddur-ddb`, choose services with DynamoDB, and select the default VPC and **route table**. "I've missed setting route table, and it cost me 1 hour"
+- Create a new Lambda function called `cruddur-messaging-stream` and enable VPC in its advanced settings and two subnets and default SG.
+- Deploy the code From `aws/lambdas/cruddur-messaging-stream.py`.
+- Add permission of `AWSLambdaInvocation-DynamoDB` to the Lambda IAM role && inline policies from `aws/policies/cruddur-message-stream-policy.json`.
+- Finally, in the DynamoDB console, create a new trigger and select `cruddur-messaging-stream` lambda function.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/5ad8370c845c721af0a6760169024b053a73a4ce)

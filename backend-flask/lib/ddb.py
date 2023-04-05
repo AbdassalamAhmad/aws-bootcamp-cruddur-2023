@@ -139,7 +139,7 @@ class Ddb:
       'user_handle':  {'S': my_user_handle}
     }
 
-    print('== create_message_group.4')
+    print('== create_message.4')
     message = {
       'pk':   {'S': f"MSG#{message_group_uuid}"},
       'sk':   {'S': created_at },
