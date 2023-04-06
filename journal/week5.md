@@ -396,6 +396,8 @@ environment:
 ```
 ### Steps in AWS Console
 - In the VPC console, create an endpoint named `cruddur-ddb`, choose services with DynamoDB, and select the default VPC and **route table**. "I've missed setting route table, and it cost me 1 hour"
+  - **The Benefit of using VPC Endpoint is to make routing to dynamodb internal and doesn't go over the internet**
+  - A VPC endpoint allows you to privately connect your VPC to supported AWS services like DynamoDB. 
 - Create a new Lambda function called `cruddur-messaging-stream` and enable VPC in its advanced settings and two subnets and default SG.
 - Deploy the code From `aws/lambdas/cruddur-messaging-stream.py`.
 - Add permission of `AWSLambdaInvocation-DynamoDB` to the Lambda IAM role && inline policies from `aws/policies/cruddur-message-stream-policy.json`.
