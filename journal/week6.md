@@ -285,7 +285,8 @@ aws ecs execute-command  \
     cd backend-flask
 ```
 
-> Check commit details [here]()
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/72727fb26d86c8928a73dc8329ac541a9039cacb)
+
 
 
 
