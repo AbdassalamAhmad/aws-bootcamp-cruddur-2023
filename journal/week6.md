@@ -147,7 +147,147 @@ aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWri
 aws ecs register-task-definition --cli-input-json file://aws/task-definitions/backend-flask.json
 ```
 
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/b58491415582924e1a5417ec4b693a493f69b926)
+
+
+
+### Create a Service from UI at first.
+- We created a Security Group to allow inbound traffic on port 80.
+- Get the VPC ID
+```sh
+export DEFAULT_VPC_ID=$(aws ec2 describe-vpcs \
+--filters "Name=isDefault, Values=true" \
+--query "Vpcs[0].VpcId" \
+--output text)
+echo $DEFAULT_VPC_ID
+```
+- Create the security group
+```sh
+export CRUD_SERVICE_SG=$(aws ec2 create-security-group \
+  --group-name "crud-srv-sg" \
+  --description "Security group for Cruddur services on ECS" \
+  --vpc-id $DEFAULT_VPC_ID \
+  --query "GroupId" --output text)
+echo $CRUD_SERVICE_SG
+```
+- Attach port 80
+```sh
+aws ec2 authorize-security-group-ingress \
+  --group-id $CRUD_SERVICE_SG \
+  --protocol tcp \
+  --port 80 \
+  --cidr 0.0.0.0/0
+```
+
+#### we need to add additional policies because we face multiple errors
+- I haven't added my Secrets into `AWS Systems Manager`, that's why I ran into additional error.
+```sh
+aws ssm put-parameter --type "SecureString" --name "/cruddur/backend-flask/AWS_ACCESS_KEY_ID" --value $AWS_ACCESS_KEY_ID
+aws ssm put-parameter --type "SecureString" --name "/cruddur/backend-flask/AWS_SECRET_ACCESS_KEY" --value $AWS_SECRET_ACCESS_KEY
+aws ssm put-parameter --type "SecureString" --name "/cruddur/backend-flask/CONNECTION_URL" --value $PROD_CONNECTION_URL
+aws ssm put-parameter --type "SecureString" --name "/cruddur/backend-flask/ROLLBAR_ACCESS_TOKEN" --value $ROLLBAR_ACCESS_TOKEN
+aws ssm put-parameter --type "SecureString" --name "/cruddur/backend-flask/OTEL_EXPORTER_OTLP_HEADERS" --value "x-honeycomb-team=$HONEYCOMB_API_KEY"
+```
+
+- We added theses permessions to our `CruddurServiceExecutionPolicy` so that ecs can access ecr
+```json
+"Action": [
+    "ecr:GetAuthorizationToken",
+    "ecr:BatchCheckLayerAvailability",
+    "ecr:GetDownloadUrlForLayer",
+    "ecr:BatchGetImage",
+    "logs:CreateLogStream",
+    "logs:PutLogEvents"
+],
+```
+
+- we added `CloudWatchFullAccess` permession to the same policy.
+
+### Create The same Service from CLI
+- we get the SG and Subnetes from the cli or AWS Console
+```sh
+# Security Group
+export CRUD_SERVICE_SG=$(aws ec2 describe-security-groups \
+  --filters Name=group-name,Values=crud-srv-sg \
+  --query 'SecurityGroups[*].GroupId' \
+  --output text)
+
+# Subents
+export DEFAULT_SUBNET_IDS=$(aws ec2 describe-subnets  \
+ --filters Name=vpc-id,Values=$DEFAULT_VPC_ID \
+ --query 'Subnets[*].SubnetId' \
+ --output json | jq -r 'join(",")')
+echo $DEFAULT_SUBNET_IDS
+```
+- used this json file `service-backend-flask.json` to create the service.
+```json
+{
+    "cluster": "cruddur",
+    "launchType": "FARGATE",
+    "desiredCount": 1,
+    "enableECSManagedTags": true,
+    "enableExecuteCommand": true,
+    "networkConfiguration": {
+      "awsvpcConfiguration": {
+        "assignPublicIp": "ENABLED",
+        "securityGroups": [
+          "sg-0b965256b756116f8"
+        ],
+        "subnets": [
+          "subnet-0e9de1c77295e17b6",
+          "subnet-0fdff04b63119822d",
+          "subnet-0cad0091edf0149cc"
+        ]
+      }
+    },
+    "propagateTags": "SERVICE",
+    "serviceName": "backend-flask",
+    "taskDefinition": "backend-flask"
+  }
+```
+- This command to create the service
+```sh
+aws ecs create-service --cli-input-json file://aws/json/service-backend-flask.json
+```
+✅ Now the Service is running and the health check are passing.
+✅ If you want to see the health-check from public-url you need to allow SG port 4567 inbound traffic.
+
+#### IF you want to shell into the Fargate instance that we're running
+- Install Sessions Manager
+```sh
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+sudo dpkg -i session-manager-plugin.deb
+```
+- Verify it's working
+```sh
+session-manager-plugin
+```
+- Execute this command to access the shell of the container.
+- Don't forget to replace task id with yours.
+```sh
+aws ecs execute-command  \
+--region $AWS_DEFAULT_REGION \
+--cluster cruddur \
+--task d1da8dbecd0e44dea34a08e0f7428e5a \
+--container backend-flask \
+--command "/bin/bash" \
+--interactive
+```
+
+- added this script `backend-flask/bin/ecs/connect-to-service` to connect to contaienr easily
+- added this task in`.gitpod.yml` to install AWS Session Manager always.
+```yml
+- name: fargate (install AWS Session Manager to access containers in fargate)
+  before: |
+    curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+    sudo dpkg -i session-manager-plugin.deb
+    session-manager-plugin
+    cd backend-flask
+```
+
 > Check commit details [here]()
+
+
 
 
 
