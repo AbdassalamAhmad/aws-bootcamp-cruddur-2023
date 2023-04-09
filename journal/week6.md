@@ -87,13 +87,16 @@ docker push $ECR_BACKEND_FLASK_URL:latest
 
 ### Create Execution Role (for ECS) using UI because we will use CloudFormation in the Future Instead.
 - We created a role that allow ECS to do some tasks.
-1
+![1](https://user-images.githubusercontent.com/83673888/230764996-7c877aa6-be46-4db9-b3d2-37261025b797.png)
+
 - The Role should have a policy (Policy add permissions to the role to be able to perform the required task)
-2
+![2](https://user-images.githubusercontent.com/83673888/230765015-c369a156-fb3f-4169-91f0-d96e1c1ae81b.png)
+
 - Name the Policy. CruddurServiceExecutionPolicy
-3
+![3](https://user-images.githubusercontent.com/83673888/230765019-cf035ccf-3fa3-412d-87e6-8c47e48f4938.png)
+
 - Name the Role CruddurServiceExecutionRole 
-4
+![4](https://user-images.githubusercontent.com/83673888/230765023-4603fe2d-b180-4475-ae99-06cee5d7cd85.png)
 
 ### Create Task Role using CLI (task role is for containers)
 - Create the role and add ECS to do the task (there is no permessions yet) 
