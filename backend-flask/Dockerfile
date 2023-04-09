@@ -1,4 +1,4 @@
-FROM python:3.9-alpine 
+FROM python:3.10-slim-buster
 
 WORKDIR /backend-flask
 
@@ -7,7 +7,7 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
 
 #this is metadata only and won't actually expose a port.
 EXPOSE 4567
