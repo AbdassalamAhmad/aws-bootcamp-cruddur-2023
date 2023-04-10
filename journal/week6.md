@@ -78,6 +78,7 @@ docker tag backend-flask:latest $ECR_BACKEND_FLASK_URL:latest
 # Push Image
 docker push $ECR_BACKEND_FLASK_URL:latest
 ```
+
 ## Create a Service in ECS
 - In order to create a Service we have to Register a Task Definition first.
 ## Register Task Defintions
@@ -288,7 +289,83 @@ aws ecs execute-command  \
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/72727fb26d86c8928a73dc8329ac541a9039cacb)
 
 
+#### Update RDS SG to allow access from the backend security group (backend container)
+- Now, backend can send traffic from port 4567 to RDS on port 5432
+```sh
+aws ec2 authorize-security-group-ingress \
+  --group-id $DB_SG_ID \
+  --protocol tcp \
+  --port 5432 \
+  --source-group $CRUD_SERVICE_SG \
+  --tag-specifications 'ResourceType=security-group,Tags=[{Key=Name,Value=BACKENDFLASK}]'
+```
+
+#### Added serviceConnectConfiguration to our Service
+
+```json
+// service-backend-flask.json
+  "serviceConnectConfiguration": {
+    "enabled": true,
+    "namespace": "cruddur",
+    "services": [
+      {
+        "portName": "backend-flask",
+        "discoveryName": "backend-flask",
+        "clientAliases": [{"port": 4567}]
+      }
+    ]
+  },
+```
+
+## Creating Load Balancer using AWS Console
+- Create a SG for load balacner that allow port 4567 and 3000.
+- Attatch that SG to our old backend SG, maybe rds in the future.
+- Create the target groups for backend and frontend.
+- Configure listeners for ALB and TG to port 4567 and 3000
+- Edit ECS service json to have load balncer enabled using the target group arn.
+```json
+  "loadBalancers": [
+    {
+        "targetGroupArn": "arn:aws:elasticloadbalancing:eu-south-1:972586073133:targetgroup/cruddur-backend-flask-tg/87ed2a3daf2d2b1d",
+        "containerName": "backend-flask",
+        "containerPort": 4567
+    }
+  ],
+```
+```sh
+aws ecs create-service --cli-input-json file://aws/json/service-backend-flask.json
+```
+- Don't enable logging to S3 from load balancer, (it's expensive)
+- Now you can try accessing the backend from load balancer DNS:4567 **(we will make it private so that API endpoints needs auth to be accessed)**
+
+## Creating Front-End Service
+### Create Docker image and push it to ECR
+- docker build one stage image (node), it failed eventually, due to memory issue (1.6GB image size) (after push ~ 580 MB)
+- docker build multi stage image (node-node) it failed eventually, due to memory issue (~722MB image size) (after push 180MB).
+- docker build multi stage image (node-nginx) (45MB image size)  (after push 18MB)
+error message of (node-nginx)
+```sh
+host not found in upstream "api" in /etc/nginx/conf.d/default.conf:20	frontend-react-js
+/docker-entrypoint.sh: Configuration complete; ready for start up
+```
+**The error was about security group of our `cruddur-srv-sg`, it didn't have port 3000 open**
+
+### Loadbalancer & Target Group
+- Check that Loadbalancer & Target Group are set correctly from last step when we did for backend-flask image
+- add port 80 for cruddur-alb-sg when using node-nginx
+
+### Create task definition & Front-end Service
+- used these files in [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/e6c5beed6db2b7fe0b06b61b4bb707dee6dee96f)
 
 
 
 
+
+
+## Spend Concerned
+### **Important** Create a Script to Stop ECS Services to Save Costs.
+- created a lambda function to Stop ECS Services everyday at midnight [check this discord thread](https://discord.com/channels/1055552619441049660/1094632478217601085) that I created explaining how to do it.
+
+### Private ECR above 500MB (Maybe try Public)
+- If you store more than 500 MB, it will cost 0.1$ per GB/month
+- Data Transfer OUT	$0.09 per GB/month
