@@ -447,21 +447,11 @@ proof of work
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ## Spend Concerned
 ### **Important** Create a Script to Stop ECS Services to Save Costs.
 - created a lambda function to Stop ECS Services everyday at midnight [check this discord thread](https://discord.com/channels/1055552619441049660/1094632478217601085) that I created explaining how to do it.
 
+> check [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/116b221e294ba95f3fbca9dd5752285c377fd047) for lambda code 
 ### Private ECR above 500MB (Maybe try Public)
 - If you store more than 500 MB, it will cost 0.1$ per GB/month
 - Data Transfer OUT	$0.09 per GB/month
