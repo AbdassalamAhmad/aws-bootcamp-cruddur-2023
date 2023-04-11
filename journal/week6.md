@@ -439,6 +439,14 @@ proof of work
 ![image](https://user-images.githubusercontent.com/83673888/231199893-fc9fd4cc-fa1a-4383-9545-53f92fd0ca98.png)
 
 
+## Securing Flask Part 1
+- Intorduced an error and see that it's unsafe to keep debugger on on production.
+- Enter the PIN, then we access a terminal, then we can do all of stuff.
+
+- To Remove that we made a `Dockerfile.prod` that doesn't allow debugger and reload (no-reload will not allow code to take affect)
+- Also we made some docker scripts to make build & run commands easier for us to run.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/7e3642d6cd3be970df4cf814db094b89b8eeb23f)
 
 
 
