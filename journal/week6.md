@@ -403,6 +403,7 @@ aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-j
 aws ecs register-task-definition --cli-input-json file://aws/task-definitions/frontend-react-js.json
 ```
 > proof of work
+![image](https://user-images.githubusercontent.com/83673888/231022236-eafc8082-422e-43df-8f37-6572400d167d.png)
 
 
 
