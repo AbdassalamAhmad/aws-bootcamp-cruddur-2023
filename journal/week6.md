@@ -434,6 +434,9 @@ ACM will provide you with a unique value that you need to add as a TXT record to
 - Re-run task definitoin and update service for changes to take effect.
 
 proof of work
+![image](https://user-images.githubusercontent.com/83673888/231199864-08dd35fd-faa0-449c-afb9-fa372f2cb747.png)
+
+![image](https://user-images.githubusercontent.com/83673888/231199893-fc9fd4cc-fa1a-4383-9545-53f92fd0ca98.png)
 
 
 
