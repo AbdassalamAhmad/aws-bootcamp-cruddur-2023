@@ -339,7 +339,7 @@ aws ecs create-service --cli-input-json file://aws/json/service-backend-flask.js
 - Now you can try accessing the backend from load balancer DNS:4567 **(we will make it private so that API endpoints needs auth to be accessed)**
 
 ## Creating Front-End Service
-### Create Docker image and push it to ECR
+### Create Docker image with nginx and push it to ECR
 - docker build one stage image (node), it failed eventually, due to memory issue (1.6GB image size) (after push ~ 580 MB)
 - docker build multi stage image (node-node) it failed eventually, due to memory issue (~722MB image size) (after push 180MB).
 - docker build multi stage image (node-nginx) (45MB image size)  (after push 18MB)
@@ -348,14 +348,61 @@ error message of (node-nginx)
 host not found in upstream "api" in /etc/nginx/conf.d/default.conf:20	frontend-react-js
 /docker-entrypoint.sh: Configuration complete; ready for start up
 ```
-**The error was about security group of our `cruddur-srv-sg`, it didn't have port 3000 open**
+
+-**WORKING** build prod docker image of andrew with 17 MB of size after pushing.
+#### Create Repo
+```sh
+aws ecr create-repository \
+  --repository-name frontend-react-js \
+  --image-tag-mutability MUTABLE
+```
+
+#### Set URL
+
+```sh
+export ECR_FRONTEND_REACT_URL="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/frontend-react-js"
+echo $ECR_FRONTEND_REACT_URL
+```
+#### Build Image
+```sh
+docker build \
+--build-arg REACT_APP_BACKEND_URL="http://cruddur-alb-525091684.eu-south-1.elb.amazonaws.com:4567" \
+--build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
+--build-arg REACT_APP_AWS_USER_POOLS_ID="eu-south-1_VVTlAbxEV" \
+--build-arg REACT_APP_CLIENT_ID="7mph1qpebk969vkggt14g8l59d" \
+-t frontend-react-js \
+-f Dockerfile.prod \
+.
+```
+#### Tag Image
+```sh
+docker tag frontend-react-js:latest $ECR_FRONTEND_REACT_URL:latest
+```
+#### Push Image
+```sh
+docker push $ECR_FRONTEND_REACT_URL:latest
+```
+If you want to run and test it
+
+```sh
+docker run --rm -p 3000:3000 -it frontend-react-js 
+```
 
 ### Loadbalancer & Target Group
 - Check that Loadbalancer & Target Group are set correctly from last step when we did for backend-flask image
-- add port 80 for cruddur-alb-sg when using node-nginx
+- **importnat** add port 3000 for cruddur-alb-sg when using `dockerfile.prod`
 
 ### Create task definition & Front-end Service
-- used these files in [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/e6c5beed6db2b7fe0b06b61b4bb707dee6dee96f)
+> - used these files in [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/e6c5beed6db2b7fe0b06b61b4bb707dee6dee96f)
+> - update task definition of front-end to have healthcheck, add script to connect to front-end & back-end service. Check it in [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commits/main)
+
+- Finally, we did these command to update front end task definition and service.
+```sh
+aws ecs create-service --cli-input-json file://aws/json/service-frontend-react-js.json
+aws ecs register-task-definition --cli-input-json file://aws/task-definitions/frontend-react-js.json
+```
+> proof of work
 
 
 
