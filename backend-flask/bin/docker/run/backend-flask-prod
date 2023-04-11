@@ -17,4 +17,5 @@ docker run --rm \
 --env ROLLBAR_ACCESS_TOKEN="${ROLLBAR_ACCESS_TOKEN}" \
 --env AWS_COGNITO_USER_POOL_ID="${AWS_COGNITO_USER_POOL_ID}" \
 --env AWS_COGNITO_USER_POOL_CLIENT_ID="7mph1qpebk969vkggt14g8l59d" \
+--network="aws-bootcamp-cruddur-2023_default" \
 -it backend-flask-prod
