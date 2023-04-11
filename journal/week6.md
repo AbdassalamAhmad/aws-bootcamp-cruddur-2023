@@ -405,6 +405,51 @@ aws ecs register-task-definition --cli-input-json file://aws/task-definitions/fr
 > proof of work
 ![image](https://user-images.githubusercontent.com/83673888/231022236-eafc8082-422e-43df-8f37-6572400d167d.png)
 
+## Creating Domain name
+- Used porkbun website to register my domain.
+- Created a Hosted Zone inside Route53 which cost 0.5$ per month.
+- Edit nameservers from porkbun, so that they have the hostedzone ones (to be managed by AWS).
+- Create SSL Certificate using ACM (AWS Certificate Manager).
+- ACM requires DNS validation
+```sh
+# ChatGPT
+ACM will provide you with a unique value that you need to add as a TXT record to the DNS configuration of your domain. The value will be checked by ACM to confirm that you are the owner of the domain.
+```
+> proof of issued certificate
+
+- Delete old listeners, add new ones to access port 80 and 443
+- redirect http to https always.
+
+
+- Created an `A` `record` that forward traffic to our loadbalancer.
+- Rebuild our Front-End `Dockerfile.prod` file with `REACT_APP_BACKEND_URL="https://api.newcruddur.dev"`
+- Change Origin from * to specific value (what is the benefit of this)
+```json
+// backend-flask.json
+        "environment": [
+          {"name": "FRONTEND_URL", "value": "https://newcruddur.dev"},
+          {"name": "BACKEND_URL", "value": "https://api.newcruddur.dev"},
+        ]
+```
+- Re-run task definitoin and update service for changes to take effect.
+
+proof of work
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -417,3 +462,5 @@ aws ecs register-task-definition --cli-input-json file://aws/task-definitions/fr
 ### Private ECR above 500MB (Maybe try Public)
 - If you store more than 500 MB, it will cost 0.1$ per GB/month
 - Data Transfer OUT	$0.09 per GB/month
+
+### Hosted Zone inside Route53 cost 0.5$ per month.
