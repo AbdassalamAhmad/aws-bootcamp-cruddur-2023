@@ -5,12 +5,13 @@ NO_COLOR='\033[0m'
 LABEL="db-schema-load"
 printf "${CYAN}== ${LABEL}${NO_COLOR}\n"
 
-# Get the absolute path of this script
 ABS_PATH=$(readlink -f "$0")
-# Get the parent of the parent of the parent path of this script (back-end folder)
-PARENT_DIR="$(dirname "$(dirname "$(dirname "$ABS_PATH")")")"
-
-schema_path="$PARENT_DIR/db/schema.sql"
+DB_PATH=$(dirname $ABS_PATH)
+BIN_PATH=$(dirname $DB_PATH)
+PROJECT_PATH=$(dirname $BIN_PATH)
+BACKEND_FLASK_PATH="$PROJECT_PATH/backend-flask"
+schema_path="$BACKEND_FLASK_PATH/db/schema.sql"
+echo $schema_path
 
 
 if [ "$1" = "prod" ]; then
