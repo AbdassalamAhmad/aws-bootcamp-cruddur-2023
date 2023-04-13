@@ -443,15 +443,21 @@ proof of work
 - Intorduced an error and see that it's unsafe to keep debugger on on production.
 - Enter the PIN, then we access a terminal, then we can do all of stuff.
 ![image](https://user-images.githubusercontent.com/83673888/231284208-56fb08bb-5f40-4263-ad32-fd786196980f.png)
-
 - To Remove that we made a `Dockerfile.prod` that doesn't allow debugger and reload (no-reload will not allow code to take affect)
 - Also we made some docker scripts to make build & run commands easier for us to run.
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/7e3642d6cd3be970df4cf814db094b89b8eeb23f)
 
 
+## Securing Flask Part 2
 
+- Created Scripts to handle [Login to ECR, Build Backend & Frontend Prod Images, Run Backend local image]
+- Created a script to force deployemnet of Frontend & Backend Services.
+- Change bin to be in root directory, and change its dependamt paths.
 
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/9c099fa381727f2db8b118155f5d6d5165216136)
+
+- Add a script to destroy all services to lower cost and to easily terminate them when we don't need them.
 
 
 
