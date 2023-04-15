@@ -46,7 +46,8 @@
           {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "7mph1qpebk969vkggt14g8l59d"},
           {"name": "FRONTEND_URL", "value": "https://newcruddur.dev"},
           {"name": "BACKEND_URL", "value": "https://api.newcruddur.dev"},
-          {"name": "AWS_DEFAULT_REGION", "value": "eu-south-1"}
+          {"name": "AWS_DEFAULT_REGION", "value": "eu-south-1"},
+          {"name": "AWS_XRAY_SDK_ENABLED", "value": "False"}
         ],
         "secrets": [
           {"name": "AWS_ACCESS_KEY_ID"    , "valueFrom": "arn:aws:ssm:eu-south-1:972586073133:parameter/cruddur/backend-flask/AWS_ACCESS_KEY_ID"},
