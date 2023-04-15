@@ -458,8 +458,62 @@ proof of work
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/9c099fa381727f2db8b118155f5d6d5165216136)
 
 - Add a script to destroy all services to lower cost and to easily terminate them when we don't need them.
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/5750f0cb8ae2bff0134de9d6b3342687d44f269f)
+
+## Fix messaging in Production
+- In this file we fixed an issue where if we typed a message to non existing user, an error occured.
+- Reason for error is there was no `return` before `{}` when `JSON` in `None`.
+```py
+# backend-flask/lib/db.py
+# When we want to return an array of json objects
+def query_object_json(self,sql,params={}):
+  self.print_sql('json',sql,params)
+  self.print_params(params)
+
+  wrapped_sql = self.query_wrap_object(sql)
+  with self.pool.connection() as conn:
+    with conn.cursor() as cur:
+      cur.execute(wrapped_sql,params)
+      json = cur.fetchone()
+      
+      if json == None:
+        return "{}"
+      else:
+        return json[0]
+```
+
+- Fixed a typo in these 3 files `frontend-react-js/src/components/MessageItem.js` `frontend-react-js/src/components/MessageGroupNewItem.js` `frontend-react-js/src/components/MessageGroupItem.js`
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/01ceb3cf9dd97af50a15d26c511b72644b252231)
+
+- Add kill all script for prod and local
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/d0c1cb6255fc09035a8f585b426a226f00bc7b44)
+
+- Fix health-check issue that causing backend service to be UnHealthy.
+- The issue occured after changing the bin dir to be at root level.
+- Solution: put back the health-check at the right location, and rereference it in `backend-flask.json`
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/b62dc61f6a08bfc63e021f9b3cfd119e75d1bacc)
 
 
+## Added Google Analytics 
+- Used Google Analytics to see where and when are users visiting my website `newcruddur.dev`
+- Accomplished that by adding this script to `frontend-react-js/public/index.html` file
+- Also you have to create an account on google analytics and follow these steps to create yours.
+  - After creating a user, Add a property (Data Streams) and choose web.
+  - Here you should Add your domain.
+  - Now copy The code they provided for you NOT MINE (because each one gets a unique ID)
+  - Put the code in your `frontend-react-js/public/index.html` file and check the realtime tab to see users hitting your domain.
+
+```js
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6D020LSSMM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6D020LSSMM');
+</script>
+```
 
 
 ## Spend Concerned
