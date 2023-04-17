@@ -1,3 +1,4 @@
 # ignore dynamodb volume folder named docker
 docker/* 
 session-manager-plugin.deb
+*.env
