@@ -515,6 +515,13 @@ def query_object_json(self,sql,params={}):
 </script>
 ```
 
+## Implement Refresh Token Cognito
+- We Fix the function that is responsible for refreshing the token which is `Auth.currentSession()` inside `checkAuth.js` file. 
+- Then we referenced that Update in all of the pages that uses that token from `checkAuth.js` file
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/0e74feec8de619e9b3b374f8661362501e68e40f)
+
+
 
 ## Spend Concerned
 ### **Important** Create a Script to Stop ECS Services to Save Costs.
