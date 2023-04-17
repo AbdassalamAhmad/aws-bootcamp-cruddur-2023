@@ -10,6 +10,19 @@
     ],
     "containerDefinitions": [
       {
+        "name": "xray",
+        "image": "public.ecr.aws/xray/aws-xray-daemon" ,
+        "essential": true,
+        "user": "1337",
+        "portMappings": [
+          {
+            "name": "xray",
+            "containerPort": 2000,
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
         "name": "backend-flask",
         "image": "972586073133.dkr.ecr.eu-south-1.amazonaws.com/backend-flask",
         "essential": true,
@@ -47,7 +60,9 @@
           {"name": "FRONTEND_URL", "value": "https://newcruddur.dev"},
           {"name": "BACKEND_URL", "value": "https://api.newcruddur.dev"},
           {"name": "AWS_DEFAULT_REGION", "value": "eu-south-1"},
-          {"name": "AWS_XRAY_SDK_ENABLED", "value": "False"}
+          {"name": "AWS_XRAY_SDK_ENABLED", "value": "True"},
+          {"name": "AWS_XRAY_URL", "value": "*api.newcruddur.dev*"},
+          {"name": "AWS_XRAY_DAEMON_ADDRESS", "value": "xray-daemon:2000"}
         ],
         "secrets": [
           {"name": "AWS_ACCESS_KEY_ID"    , "valueFrom": "arn:aws:ssm:eu-south-1:972586073133:parameter/cruddur/backend-flask/AWS_ACCESS_KEY_ID"},

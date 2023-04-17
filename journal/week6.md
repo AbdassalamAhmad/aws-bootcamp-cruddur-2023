@@ -523,6 +523,15 @@ def query_object_json(self,sql,params={}):
 
 
 
+## Contaniers Insights
+### Deploy X-Ray into Front-end & Backend and Implement a Health Check
+
+### Genereate ENV File to enhance the look of our docker-compose and docker build and run commands.
+
+### Debugging Actions and Tools
+✅
+
+
 ## Spend Concerned
 ### **Important** Create a Script to Stop ECS Services to Save Costs.
 - created a lambda function to Stop ECS Services everyday at midnight [check this discord thread](https://discord.com/channels/1055552619441049660/1094632478217601085) that I created explaining how to do it.
