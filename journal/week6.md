@@ -525,11 +525,31 @@ def query_object_json(self,sql,params={}):
 
 ## Contaniers Insights
 ### Deploy X-Ray into Front-end & Backend and Implement a Health Check
+- Define x-ray in the backend task definition.
+- Add 2 scripts to register the task instead of running a cli command
+- we don't want the front-end x-ray (not necessary)
+
+> check [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/96606771a46de3615e095dfa2198714970f393ed)
 
 ### Genereate ENV File to enhance the look of our docker-compose and docker build and run commands.
+- Created these two files `erb/frontend-react-js.env.erb` & `erb/backend-flask.env.erb`
+Those files have env variables in a erb format which can be used in ruby language to render the content inside `${}` variables.
+- Created these two ruby scripts `bin/backend/generate-env` & `bin/frontend/generate-env` to convert the above files into plain text env vars.
+- Finally [Very Important], Add this `*.env` to our `.gitignore` file so that the generated env files doesn't get commited to our public repo, therefore exposing our credentials.
+
+> check [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/896fdf72fe50507092b41a60a99dad6524d94fe4)
+
+- Automatically, generate the env files everytime we open gitpod workspace.
+- Change name of the docker-compose network cruddur-net to cruddur-network in multiple files.
+- Reference the generated env file in the docker-compose file instead of referencing all the envs in the docker-compose file (more concise).
+
+> check [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/9216d4365ffb8f4df41e5ba5243977d24b655f73)
 
 ### Debugging Actions and Tools
-✅
+- Install ping in dockerfile of python production to debug connections. (then we removed it).
+- Configured busybox to debug connections.
+
+> check [this commit](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/60d38e66e0c32a9ddd9e98ab32c9ac3f77f71538)
 
 
 ## Spend Concerned
