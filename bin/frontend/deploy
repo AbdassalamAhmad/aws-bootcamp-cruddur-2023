@@ -9,6 +9,12 @@ LATEST_TASK_DEFINITION_ARN=$(aws ecs describe-task-definition \
 --query 'taskDefinition.taskDefinitionArn' \
 --output text)
 
+CYAN='\033[1;36m'
+NO_COLOR='\033[0m'
+LABEL="Frontend Task Def ARN:"
+printf "${CYAN}== ${LABEL} ${LATEST_TASK_DEFINITION_ARN}${NO_COLOR}\n"
+
+
 aws ecs update-service \
 --cluster $CLUSTER_NAME \
 --service $SERVICE_NAME \
