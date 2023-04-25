@@ -2,3 +2,6 @@
 docker/* 
 session-manager-plugin.deb
 *.env
+
+# don't ignore this file because it's not sensetive, also required.
+!thumbing-serverless-cdk/.env
