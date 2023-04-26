@@ -1,7 +1,9 @@
 # ignore dynamodb volume folder named docker
-docker/* 
-session-manager-plugin.deb
+docker/*
 *.env
 
 # don't ignore this file because it's not sensetive, also required.
 !thumbing-serverless-cdk/.env
+
+# ignore node_modules in lambda folder (and all other folders)
+node_modules

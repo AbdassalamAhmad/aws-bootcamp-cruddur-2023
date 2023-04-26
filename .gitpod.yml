@@ -44,6 +44,13 @@ tasks:
   - name: cdk
     before: |
       npm install aws-cdk -g
+      cd thumbing-serverless-cdk
+      npm i
+
+  # install sharp, aws-sdk for s3-client
+  - name: lambdas
+    before: |
+      "$THEIA_WORKSPACE_ROOT/bin/serverless/build"
 
 vscode:
   extensions:
