@@ -85,6 +85,9 @@ cdk ls
     return lambdaFunction;
   } 
 ```
+- **Note:** meaning of the handler property is set to 'index.handler',
+ which means that the entry point for the Lambda function is the handler function within the index.js file,
+ located in the path/to/my/function/code directory.
 
 - Add `.env` file
 ```yml

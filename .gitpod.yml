@@ -36,10 +36,10 @@ tasks:
 
   - name: fargate (install AWS Session Manager to access containers in fargate)
     before: |
+      cd /workspace
       curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
       sudo dpkg -i session-manager-plugin.deb
       session-manager-plugin
-      cd backend-flask
 
   - name: cdk
     before: |
