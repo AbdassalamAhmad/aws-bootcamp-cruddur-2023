@@ -96,3 +96,52 @@ THUMBING_FUNCTION_PATH="/workspace/aws-bootcamp-cruddur-2023/aws/lambdas"
 THUMBING_S3_FOLDER_INPUT="/avatar/original"
 THUMBING_S3_FOLDER_OUTPUT= "/avatar/processed"
 ```
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/f416b6ebc797890978eecbc4081a836414a86ffb)
+
+## Implement Serverless Pipeline (2nd video)
+### summury
+- We want to create a lambda function that will be triggered once we upload a picture (avatar) to our front-end (now to S3 bucket).
+- The Lambda function will proccess the image and resize it and store in the same bucket in different folder.
+- Once the new picture added an sns topic will be triggered.
+
+
+### Add Lambda code in JS
+- Used JS to write Lmabda code because we will use `sharp` library to process images because it is light-weight library unlike other languages libraries.
+- Installed `sharp` and `@aws-sdk/client-s3` using `npm i` command after `npm init -y`
+- The main magic is happening in `index.js` where we get the name of the picture with its path, then we conver the name with the path to the new location.
+- We do the process using `sharp` library from the code written in `s3-image-processing.js` file.
+- Finally we do the upload (put), we get the processed image from this function `processImage` then we upload it to s3 in the new location using this function `uploadProcessedImage`.
+- `test.js` to test the process library without lambda (locally).
+- `example.json` to test the lambda S3.put to check permessions and see the logs.
+
+- Why used decoder and /+ in `const srcKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));`
+The reason for using the decode function is that if space in the key it will be as `%20` without using decode
+if i use decode it will be sent as a space.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/a5eb24da3ea9200569e26ee1bc9e7c73019846f1)
+
+### Add scripts for s3 assets bucket 
+- made some scripts to make uploads and clear S3 bucket and building the dependencies required for lambda easier for us while developing.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/2922918eba4f0778da83afabe90ce04cd70004ee)
+
+
+### Ignore node_modules & Install sharp and cdk in gitpod & Update envs
+- did all of that.
+- export my DOMAIN_NAME & gp env DOMAIN_NAME.
+- add 2 more env and edit the previous ones.
+- remove `/` from the THUMBING_S3_FOLDER_INPUT & output.
+- change the name of the bucket to be assets.domainname because CloudFormation require that in future.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/ddcde5e91b81ea52be9e85c8412506584aef5601)
+
+### Update Stack
+- Do the import, reference the new env.
+- Import our manual created S3 bucket.
+- Add S3 Event Notification to lambda and SNS.
+- Create SNS Topic and Subscription.
+- Create policies for access and put objects in S3 from lambda.
+- Attach those policies to lambda.
+- Comment some code for SNS Policy.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/6492c386d012400c9596a48b5aed4e58c5aa35d6)
