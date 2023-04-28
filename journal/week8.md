@@ -145,3 +145,39 @@ if i use decode it will be sent as a space.
 - Comment some code for SNS Policy.
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/6492c386d012400c9596a48b5aed4e58c5aa35d6)
+
+## Serve Avatars Using CloudFront (3rd video)
+### Why we're using CloudFront
+- The reason for using CloudFront is, we don't want to download the avatar or assets images everytime someone visit the app.
+
+### Creating CloudFront from AWS Console
+- choose your s3 bucket, update its policy
+- create control settings
+- custom header is for static hosting.
+- origin shield is another security layer (cost money don't need it)
+- redirect to https
+- Allow GET, HEAD HTTP methods.
+- caching optimized, CORS-customOrigin, SimpleCORS. Policies.
+- price class depends on the regions the more regions the higher the price.
+- add custom domain name assets.newcruddur.dev
+- add ssl certificate from ACM in us-east-1 region (we created one before but for our default region)
+- logging off
+- description: Serve Assets for Cruddur.
+- create "A Record" inside route53 that point out assets.newcruddur.dev to cloudfront.
+- added that policy from cloudfront into our s3 bucket so that cloudfront can access that.
+
+### Re-Architect our S3 Buckets
+- Used two S3 Buckets, one for uploading original images, then removing the images after a certain amount of days(1 day).<br>
+The other one is for storing the processed ones.
+- change the bucket names, therfore change the values and names inside the stack template.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/52a7e7a5674cfbb689e86c906a03271181b75b89)
+
+### Rename serverless Folder into avatars
+- change the scripts to have the new s3 buckets names.
+- fix the folder level (uploaded avatars doesn't have a folder).<br>
+while the processed assets s3 bucket has folder for processed avatars.<br>
+because this s3 bucket will have multiple sources like messaging, posts and avatars.
+- finally rename the directory serverless -> avatars.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/2503ddfa72611be71396957ad094a5231d383fd9)
