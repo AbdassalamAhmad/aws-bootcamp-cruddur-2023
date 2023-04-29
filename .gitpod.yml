@@ -50,7 +50,7 @@ tasks:
   # install sharp, aws-sdk for s3-client
   - name: lambdas
     before: |
-      "$THEIA_WORKSPACE_ROOT/bin/serverless/build"
+      "$THEIA_WORKSPACE_ROOT/bin/avatars/build"
 
 vscode:
   extensions:
