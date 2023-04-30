@@ -181,3 +181,25 @@ because this s3 bucket will have multiple sources like messaging, posts and avat
 - finally rename the directory serverless -> avatars.
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/2503ddfa72611be71396957ad094a5231d383fd9)
+
+
+## Implement User profile page (4th Video)
+### Implement Back-End, SQL and Front-End Page
+- removed old mocked data, and add these two lines that will execute SQL query to get the profile data and its activities
+```py
+      sql = db.template('users','show_profile_and_its_activities')
+      results = db.query_object_json(sql, {'handle': user_handle})
+```
+- made this sql file `show_profile_and_its_activities.sql` that has a big query that gets back a strucuture like this.
+
+
+- re-implemented `frontend-react-js/src/pages/UserFeedPage.js` because we re-structured the Json that gets back to the front-end to the response.
+```js
+      if (res.status === 200) {
+        setProfile(resJson.profile)
+        setActivities(resJson.activities)
+      } 
+```
+- implemented the checkAuth function that we made earlier in a previous week.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/2510350321a77e387c251a8c5fcd0381766cde83)
