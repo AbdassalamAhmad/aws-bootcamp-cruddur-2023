@@ -202,3 +202,40 @@ because this s3 bucket will have multiple sources like messaging, posts and avat
 - implemented the checkAuth function that we made earlier in a previous week.
 
 > Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/2510350321a77e387c251a8c5fcd0381766cde83)
+
+### Implemented an Edit Profile Button
+- To understand this line
+ ```js
+// UserFeedPage.js
+<ProfileHeading setPopped={setPoppedProfile} profile={profile} />
+```
+that is referenced in 
+```js
+// ProfileHeading.js
+      <EditProfileButton setPopped={props.setPopped} />
+```
+that is referenced in 
+```js
+// EditProfileButton.js
+    props.setPopped(true);
+    return false;
+  }
+
+  return (
+    <button onClick={pop_profile_form} className='profile-edit-button' href="#">Edit Profile</button>
+```
+
+In the parent component, `setPoppedProfile` is a state updater function passed as a prop to the child component `ProfileHeading`. This function is used to set the state of the `poppedProfile` boolean variable. When `setPoppedProfile` is called with true, it sets the `poppedProfile` state variable to true, which triggers a re-render of the parent component.
+
+Explanation: when a user hit the edit profile button the pop_profile_form function will be triggered that will setPopped to true.
+this will reflect on ProfileHeading.js line above, then will reflect on UserFeedPage.js so poppedProfile will be true and the profile will re-render again to edit the images.
+
+- First, we implemented `components/EditProfileButton.js` that has a function to display a forum once we clicked a button, but we didn't implement the forum yet.
+- Then, we implement the style of that button in `components/EditProfileButton.css`.
+- Then, we implement `components/ProfileHeading.js` which has content about the user that get passed by props from the `UserFeedPage.js` and the banner image and avatar image (hard-coded) which will be changed later.
+- Now, we do the style (some of the style was made in .js file) but for the rest we use `components/ProfileHeading.css`.<br> we placed the avatar inside the banner, so that we can get the shape of twitter.
+
+
+
+
+
