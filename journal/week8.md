@@ -191,8 +191,7 @@ because this s3 bucket will have multiple sources like messaging, posts and avat
       results = db.query_object_json(sql, {'handle': user_handle})
 ```
 - made this sql file `show_profile_and_its_activities.sql` that has a big query that gets back a strucuture like this.
-
-
+![image](https://user-images.githubusercontent.com/83673888/235360974-fe9ebf72-cc22-4fcf-a998-79bfd77144ac.png)
 - re-implemented `frontend-react-js/src/pages/UserFeedPage.js` because we re-structured the Json that gets back to the front-end to the response.
 ```js
       if (res.status === 200) {
