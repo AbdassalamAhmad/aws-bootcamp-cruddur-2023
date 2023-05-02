@@ -8,7 +8,6 @@ export default function ProfileForm(props) {
   const [displayName, setDisplayName] = React.useState(0);
 
   React.useEffect(()=>{
-    console.log('---------------')
     console.log('useEffects',props)
     setBio(props.profile.bio);
     setDisplayName(props.profile.display_name);
@@ -33,7 +32,6 @@ export default function ProfileForm(props) {
         }),
       });
       let data = await res.json();
-      console.log("data:-----",data)
       if (res.status === 200) {
         // clear the bio and displayname fields so that when we open it again they will be ready to be used.
         setBio(null)
