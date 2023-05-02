@@ -236,6 +236,73 @@ this will reflect on ProfileHeading.js line above, then will reflect on UserFeed
 - Now, we do the style (some of the style was made in .js file) but for the rest we use `components/ProfileHeading.css`.<br> we placed the avatar inside the banner, so that we can get the shape of twitter.
 
 
+## Implement Migrations Backend Endpoint Profile Form (5th Video)
+#### Small edit for the whole project structure
+- add this file `jsconfig.json` to make imorting the compnents in the pages easier. (not having to do ../)
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/0b0426b00792f14a18f719a9ba3971aa2c73ef36)
+
+### Implement The Profile Form Front-End After Finsihing Edit Profile Button
+- The edit button is used to set `props.setPopped(true);`<br>
+which will take effect on `profileHeading.js` in `<EditProfileButton setPopped={props.setPopped} />`<br>
+which will take effect on `UserFeedPage.js` in  `<ProfileHeading setPopped={setPoppedProfile} profile={profile} />`<br>
+which will take effect on `<ProfileForm profile={profile} popped={poppedProfile} setPopped={setPoppedProfile}/>`<br>
+**The End result is openning the form after clicking the Edit Button**
+
+- Implemented the `ProfileForm.js` which has the bio and display name to be edited, this form should be imported in `UserFeedPage.js`.
+- Implemented the `ProfileForm.css` to style the form.
+- Implemented `Popup.css` to edit the Z-index (to show the form above the user profile page)
+- Finally we removed part of `ReplyForm.css` because it's not needed anymore after implementing `Popus.css`.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/f518c3b591b72f0ff053dbdbf5337c1949df8f16)
 
 
+### Implement The Profile Form Back-End
+- Implemented the service `update_profile.py` which will get the bio and display_name from front-end and cognito_user_id from the back-end then it commits bio and display_name to our DB using this query `update.sql` and return the handle to perform another query.
+- The second query is old one called `short.sql`will get the uuid, display_name, handle and it will be send to the front-end (I think just to check if the query was successed) because of these lines
+```js
+ let data = await res.json();
+      if (res.status === 200) {
+        // clear the bio and displayname fields so that when we open it again they will be ready to be used.
+        setBio(null)
+        setDisplayName(null)
+        // close the forum if we get 200 code which meanse if we success in updating the bio | display_name
+        props.setPopped(false)
+```
+- `app.py` will get the bio and display_name from front-end and cognito_user_id from access tocken and send them to `update_profile.py` service.
 
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/033b382d8d920ea486c4dc882764f65d99efa512)
+
+#### Note about Bio in Database
+- I used this command in the db to create the bio column.
+```sql
+ALTER TABLE public.users ADD COLUMN bio text;
+```
+- I did that for testing purposes, and it worked.
+- I think we did the migration for something in the future, because this seems unnecessary at this point.
+
+> Check commit details for showing bio in the front-end [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/d5831c252b26587c451b5134241477456ee4fa36)
+
+### Implement Migrations 
+- Migrations is a way to Alter our Database Schema in a programatic way, so we're not doing it manually, also we store the edit time and the file we used to make that edit. Also we used un-edit (rollback) in the same file to revert the change we made if that was causing a problem.
+
+- Edit `schema.sql` to have a new Table called `schema_information` that will store `last_successful_run` which is a time value = the name of the generated file that was run.
+- `bin/generate/migration` this script will generate a file with a timestamp that will be filled later with the actual edit we want to make
+- `backend-flask/db/migrations/16830311789006848_add_bio_column.py` this is the generated file then we add the sql commands for migration and rollback.
+- Finally `bin/db/migrate` this script will run the previous file to migrate (add bio column) and commit the time of creating that file to the db under last_successful_run.
+- Finally-again `bin/db/rollback` will run the previous file to rollback the changes and also commit  the time of creating that file to the db under last_successful_run.
+
+
+- Why did we insert last_successful_run into the database in schema,
+ because when we ran migrate script it didn't update its value because it's not there yet to update it.
+- Why we add on conflict line in `schema.sql`?
+because when we run schema load the schema_information table will not be destroyed like others.
+so when we insert the first row (id=1, last_suc_run ='0') make sure that we don't insert it TWICE.
+
+- Why I've made this change to the code?
+```py
+if int(last_successful_run) <= file_time:
+```
+- because if there was multiple files in that for loop then last_successful_run will be str and it will error on this if condition. <br>
+so I removed the int form the return of the sql query because it becamde redundant in this case.
+
+> Check commit details for showing bio in the front-end [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/95a38d014a07fe63a56cca9a0ecb6ca9ee467010)
