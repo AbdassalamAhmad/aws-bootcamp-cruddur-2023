@@ -22,11 +22,12 @@ tasks:
       export GITPOD_IP=$(curl ifconfig.me)
       source "$THEIA_WORKSPACE_ROOT/bin/rds/update-sg-rule"
 
-  - name: Install Front-End dependencies
+  - name: "Install Front-End dependencies"
     before: |
       "$THEIA_WORKSPACE_ROOT/bin/frontend/generate-env"
       cd ./frontend-react-js
       npm i
+      gp sync-done "Install Front-End dependencies"
 
   - name: Install Back-End dependencies
     before: |
@@ -51,6 +52,19 @@ tasks:
   - name: lambdas
     before: |
       "$THEIA_WORKSPACE_ROOT/bin/avatars/build"
+
+  - name: "docker-compose up"
+    before: |
+      gp sync-await "Install Front-End dependencies"
+      docker compose -f "./docker-compose-gitpod.yml" up -d --build
+      gp sync-done "docker-compose up"
+
+  - name: db&ddb-setup
+    init: |
+      gp sync-await "docker-compose up"
+      ./bin/db/setup
+      ./bin/ddb/schema-load
+      ./bin/ddb/seed
 
 vscode:
   extensions:
