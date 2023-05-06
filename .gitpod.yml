@@ -62,6 +62,9 @@ tasks:
   - name: db&ddb-setup
     init: |
       gp sync-await "docker-compose up"
+      echo "Waiting for 10 seconds..."
+      sleep 10
+      echo "Done waiting."
       ./bin/db/setup
       ./bin/ddb/schema-load
       ./bin/ddb/seed
