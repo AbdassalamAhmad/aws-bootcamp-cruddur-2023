@@ -102,7 +102,7 @@ THUMBING_S3_FOLDER_OUTPUT= "/avatar/processed"
 ### summury
 - We want to create a lambda function that will be triggered once we upload a picture (avatar) to our front-end (now to S3 bucket).
 - The Lambda function will proccess the image and resize it and store in the same bucket in different folder.
-- Once the new picture added an sns topic will be triggered.
+- Once the new picture added an sns topic will be triggered.(I think it will be used with webhook to put the processed image in the front-end)
 
 
 ### Add Lambda code in JS
@@ -306,3 +306,116 @@ if int(last_successful_run) <= file_time:
 so I removed the int form the return of the sql query because it becamde redundant in this case.
 
 > Check commit details for showing bio in the front-end [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/95a38d014a07fe63a56cca9a0ecb6ca9ee467010)
+
+
+## Implemnet uploading Avatar Picture from Front-end (Rest of the videos)
+### Summary
+- Front-End: Implement two functions, one is to call an API Gateway to get a presigned url, the other one is for uploading the avatar image using that URLto S3.
+- AWS: Implement API Gateway that integrated with two lambdas.
+  - Auth Lambda: will authenticate JWT token and extract cognito_user_uuid and send it to the other Lambda.
+  - Presigned URL Lambda: will handle CORS, then after preflight check, it gets back a presigned URL that can be used to push files to S3 bucket.
+- CORS Issues were the most painful.
+
+### Creating Auth Lambda
+- used js to create it from aws repo.<br>
+`npm install aws-jwt-verify --save`<br>
+- zip the files and push them to lambda named CruddurApiGatewayLambdaAuthorizer
+- don't forget to enter env for USER_POOL_ID, and CLIENT_ID.
+
+### Creating Presigned URL lambda
+- used ruby language to create the lambda.
+```sh
+bundle init
+bundle install 
+bundle exec ruby function.rb # run the function
+```
+- Gemfile is like requirements.txt , we can add libraries here and it will be installed using `bundle install`
+- Add permessions (put object on s3 on a sepcific bucket on any object)
+(PresignerUrlAvatarPolicy) can be found in `aws\policies\s3-upload-avatar-presigned-url-policy.json`
+- put the env in AWS LAMBDA. then change the name of the function to function.rb and change the entry of the lambda (Runtime Settings) to function.handler
+- This lambda has two parts, one for handling CORS, because this function gets called twice one for CORS to check called preflight. The other one is for presigned url
+- The second part of this lambda gets the extension from the body of the POST request from front-end and gets cognito_user_uuid from the other lambda context to name the avatar this name `uuid.extension`.<br>
+Finally it send the presigned url to the front-end that has the name and required permissions to put files on S3.
+- **S3 CORS**: `aws\s3\cors.json` this file should be put on S3 CORS to allow the browser to push files to S3.<br>
+**Note** we used **`Thunder Client`** VS Code extension to try POSTING files using that presigned url and it worked without setting S3 CORS. refer to [this post on discord](https://discord.com/channels/1055552619441049660/1103771693337554954)
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/7d4d4ce3390ccedbed7f6f27b13452c49c4b3d48)
+
+### JWT ruby Lambda Layer
+- Used this script to create a Lambda layer then add it to the lambda using AWS Console.
+- This will help in decoding the token to get cognito_user_uuid.
+- I didn't use that method, instead I I passed the cognito_user_uuid from JWT sub from CruddurApiGatewayLambdaAuthorizer (Auth Lambda ) to CruddurAvatarUpload. for more info check this [reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-lambda-authorizer.html). 
+
+### Creating the API Gateway from Console
+- Create `api.<domain_name>` 
+- Create two routes:
+  - `POST /avatars/key_upload` with authorizer `CruddurJWTAuthorizer` which invoke Lambda `CruddurApiGatewayLambdaAuthorizer`, and with integration `CruddurAvatarUpload`
+  - `OPTIONS /{proxy+}` without authorizer, but with integration `CruddurAvatarUpload`
+- We didn't configure CORS at API Gateway.
+
+### Implement the Fornt-End Functions
+- Implemented s3uploadkey that will trigger API Gateway to get the presigned url.
+- Implemented s3upload that will trigger the previous one and gets the presigned url then it will gets the file from the client to upload it to S3 bucket.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/41ca11ae7e4b1ef6aaa4235e2c2af99daabdb83b)
+
+### Render Avatar Images
+- Pass cognito_user_uuid from `checkAuth.js` lib to `profileInfo.js` then `profileHeading.js` through `show_profile_and_its_activities.sql`
+
+- we used that cognito_user_uuid because it is the name of our avatar image.
+- Finally, implemented `ProfileAvatar.js` which has the url of the bucket and some styling.
+
+> Check commit details [here](https://github.com/omenking/aws-bootcamp-cruddur-2023/commit/ecd2f12ee5043b3ac731fb45ec5d268d8ffe192f)
+
+## [Additional Work] Render Banner Image
+- I basically did the same as in avatar.
+- created a button connected to a new s3uploadbanner function that upload the image.
+- this function send a value called banner to lambda function.
+- the `CruddurAvatarUpload` lambda function has this code to name the image
+```ruby
+    if banner_or_avatar == "banner" || banner_or_avatar == "avatar"
+      if banner_or_avatar == "banner"
+        object_key = "#{banner_or_avatar}-#{cognito_user_uuid}.#{extension}"
+      else
+        object_key = "#{cognito_user_uuid}.#{extension}"
+      end
+    else
+      puts "Invalid value for banner_or_avatar: #{banner_or_avatar}"
+    end
+```
+- the proccess image lambda will use this code to put the image in its corresponding folder in assets bucket
+```js
+  let folderOutput, dstKey;
+
+  if (filename.startsWith("banner")) {
+    folderOutput = "banners"
+    dstKey = `${folderOutput}/${filename}.jpg`;
+    console.log(`Destination key is: ${dstKey}`);
+  } else {
+    folderOutput = "avatars"
+    dstKey = `${folderOutput}/${filename}.jpg`;
+    console.log(`Destination key is: ${dstKey}`);
+  }
+```
+
+- Finally this commit was done in seperate branch because I didn't make it look as beatiful as main.
+
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/c3a2b4c7418184daa6d989f5ca4b92c2606ef892)
+
+
+## Additional Script
+- **Problem**: I was getting tired of doing `docker-compose up` and then setting up our local db and dynamodb tables.
+
+**Solution:**
+> Check commit details [here](https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/commit/1e61acd6d6137a9a1c65c81b98d11d987751f4bb)
+
+- **Explanation:** `gp sync-done` in any task will send a signal to the other task that have `gp sync-await` to make it begin working.
+
+- So, we want to start docker-compose up after finishing the front-end task, then after finishing docker-compose task we want to setup our db and ddb.
+
+- Notice that `init` is used for db and ddb because we want this task to run only one time when a new gitpod workspace lunch, because when we stop and reopen the workspace the local database and dynamodb tables will still be there and we don't want to lose that data. <br>
+We only want to do `docker-compose up`.
+
+- Small Note: you can condense the last two tasks into one but I prefer to have them separate.
+
+
