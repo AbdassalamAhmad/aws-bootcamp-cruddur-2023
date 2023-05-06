@@ -25,19 +25,36 @@ def handler(event:, context:)
 
     body_hash = JSON.parse(event["body"])
     extension = body_hash["extension"]
-
-    # andrew way
+    
+    # for banner
+    banner_or_avatar = body_hash["banner_or_avatar"]
+    puts(banner_or_avatar)
+    
     # decoded_token = JWT.decode token, nil, false
     # cognito_user_uuid = decoded_token[0]['sub']
-    
-    # my way (reference uuid from the aut lambda in the context)
     cognito_user_uuid = event["requestContext"]["authorizer"]["lambda"]["sub"]
 
     puts({step:'presign url', sub_value: cognito_user_uuid}.to_json)
 
     s3 = Aws::S3::Resource.new
     bucket_name = ENV["UPLOADS_BUCKET_NAME"]
-    object_key = "#{cognito_user_uuid}.#{extension}"
+
+    
+    # for banner
+    # if banner_or_avatar == "banner"
+    #   object_key = "#{banner_or_avatar}-#{cognito_user_uuid}.#{extension}"
+    # else
+    #   object_key = "#{cognito_user_uuid}.#{extension}"
+    
+    if banner_or_avatar == "banner" || banner_or_avatar == "avatar"
+      if banner_or_avatar == "banner"
+        object_key = "#{banner_or_avatar}-#{cognito_user_uuid}.#{extension}"
+      else
+        object_key = "#{cognito_user_uuid}.#{extension}"
+      end
+    else
+      puts "Invalid value for banner_or_avatar: #{banner_or_avatar}"
+    end
 
     puts({object_key: object_key}.to_json)
 

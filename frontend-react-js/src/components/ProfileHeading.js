@@ -1,19 +1,23 @@
 import './ProfileHeading.css';
 import EditProfileButton from '../components/EditProfileButton';
 import ProfileAvatar from 'components/ProfileAvatar'
+import ProfileBanner from 'components/ProfileBanner'
 
 export default function ProfileHeading(props) {
-  const backgroundImage = 'url("https://assets.newcruddur.dev/banners/banner.jpg")';
-  const styles = {
-    backgroundImage: backgroundImage,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  };
+  // const backgroundImage = 'url("https://assets.newcruddur.dev/banners/banner-${props.profile.cognito_user_uuid}.jpg")';
+  // const styles = {
+  //   backgroundImage: backgroundImage,
+  //   backgroundSize: 'cover',
+  //   backgroundPosition: 'center',
+  // };
   return (
   <div className='activity_feed_heading profile_heading'>
     <div className='title'>{props.profile.display_name}</div>
     <div className="cruds_count">{props.profile.cruds_count} Cruds</div>
-    <div className="banner" style={styles} >
+    {/* <div className="banner" style={styles} > */}
+    <div className="banner" >
+      {props.profile.cognito_user_uuid}
+      <ProfileBanner id={props.profile.cognito_user_uuid} />
       <div className="avatar">
         <ProfileAvatar id={props.profile.cognito_user_uuid} />
       </div>

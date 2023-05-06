@@ -12,13 +12,14 @@ export default function ProfileForm(props) {
     setDisplayName(props.profile.display_name);
   }, [props.profile])
 
-  const s3uploadkey = async (extension)=> {
+  const s3uploadkey = async (extension, banner_or_avatar)=> {
     try {
       const gateway_url = `${process.env.REACT_APP_API_GATEWAY_ENDPOINT_URL}/avatars/key_upload`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
       const json = {
-        extension: extension
+        extension: extension,
+        banner_or_avatar: banner_or_avatar
       }
       const res = await fetch(gateway_url, {
         method: "POST",
@@ -40,7 +41,7 @@ export default function ProfileForm(props) {
       console.log(err);
     }
   }
-  const s3upload = async (event)=> {
+  const s3uploadavatar = async (event)=> {
 
     const file = event.target.files[0]
     const filename = file.name
@@ -50,7 +51,38 @@ export default function ProfileForm(props) {
     console.log(filename,size,type)
     const fileparts = filename.split('.')
     const extension = fileparts[fileparts.length-1]
-    const presignedurl = await s3uploadkey(extension)
+    let banner_or_avatar = "avatar"
+    const presignedurl = await s3uploadkey(extension, banner_or_avatar)
+
+    try {
+      const res = await fetch(presignedurl, {
+        method: "PUT",
+        body: file,
+        headers: {
+          'Content-Type': type
+      }})
+      if (res.status === 200) {
+        
+      } else {
+        console.log(res)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const s3uploadbanner = async (event)=> {
+
+    const file = event.target.files[0]
+    const filename = file.name
+    const size = file.size
+    const type = file.type
+    const preview_image_url = URL.createObjectURL(file)
+    console.log(filename,size,type)
+    const fileparts = filename.split('.')
+    const extension = fileparts[fileparts.length-1]
+    let banner_or_avatar = "banner"
+    const presignedurl = await s3uploadkey(extension, banner_or_avatar)
 
     try {
       const res = await fetch(presignedurl, {
@@ -129,8 +161,10 @@ export default function ProfileForm(props) {
             </div>
           </div>
           <div className="popup_content">
-
-          <input type="file" name="avatarupload" onChange={s3upload} />
+          <label>Avatar Upload</label>
+          <input type="file" name="avatarupload" onChange={s3uploadavatar} />
+          <label>Banner Upload</label>
+          <input type="file" name="bannerupload" onChange={s3uploadbanner} />
 
             <div className="field display_name">
               <label>Display Name</label>

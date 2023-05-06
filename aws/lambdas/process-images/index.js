@@ -4,13 +4,14 @@ const path = require('path');
 
 const bucketName = process.env.DEST_BUCKET_NAME
 const folderInput = process.env.FOLDER_INPUT
-const folderOutput = process.env.FOLDER_OUTPUT
+// const folderOutput = process.env.FOLDER_OUTPUT
 const width = parseInt(process.env.PROCESS_WIDTH)
 const height = parseInt(process.env.PROCESS_HEIGHT)
 
 client = getClient();
 
 exports.handler = async (event) => {
+  console.log(event)
   const srcBucket = event.Records[0].s3.bucket.name;
   const srcKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
   console.log('srcBucket',srcBucket)
@@ -19,7 +20,20 @@ exports.handler = async (event) => {
   const dstBucket = bucketName;
 
   filename = path.parse(srcKey).name
-  const dstKey = `${folderOutput}/${filename}.jpg`
+  let folderOutput, dstKey;
+  
+  if (filename.startsWith("banner")) {
+    folderOutput = "banners"
+    dstKey = `${folderOutput}/${filename}.jpg`;
+    console.log(`Destination key is: ${dstKey}`);
+  } else {
+    folderOutput = "avatars"
+    dstKey = `${folderOutput}/${filename}.jpg`;
+    console.log(`Destination key is: ${dstKey}`);
+  }
+
+
+  // const dstKey = `${folderOutput}/${filename}.jpg`
   console.log('dstBucket',dstBucket)
   console.log('dstKey',dstKey)
 

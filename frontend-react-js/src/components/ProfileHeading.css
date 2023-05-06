@@ -11,6 +11,12 @@
   border: solid 8px var(--fg);
 }
 
+.profile_heading .profile-banner {
+  position: relative;
+  height: 180px;
+}
+
+
 .profile_heading .banner {
   position: relative;
   height: 200px;
