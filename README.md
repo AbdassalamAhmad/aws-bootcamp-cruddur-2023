@@ -6,7 +6,13 @@ useless badge
 - Application: Cruddur
 - Cohort: 2023-A1
 
-This is the starting codebase that will be used in the FREE AWS Cloud Project Bootcamp 2023
+# Cruddur (New Twitter)
+## Project Demo
+
+
+https://github.com/AbdassalamAhmad/aws-bootcamp-cruddur-2023/assets/83673888/d0277897-09be-4405-8c79-0ce47cbbb27e
+
+
 
 ![Cruddur Graphic](_docs/assets/cruddur-banner.jpg)
 
