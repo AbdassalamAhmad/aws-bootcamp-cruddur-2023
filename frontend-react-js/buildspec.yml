@@ -12,7 +12,8 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t frontend-react-js -f "Dockerfile.prod" .
+#       - docker build -t frontend-react-js -f "Dockerfile.prod" .
+      - docker build --build-arg REACT_APP_BACKEND_URL="https://api.newcruddur.dev" --build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" --build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" --build-arg REACT_APP_AWS_USER_POOLS_ID="eu-south-1_VVTlAbxEV" --build-arg REACT_APP_CLIENT_ID="7mph1qpebk969vkggt14g8l59d" -t frontend-react-js -f "Dockerfile.prod" .
       - docker tag $REPO_NAME $IMAGE_URL/$REPO_NAME
   post_build:
     commands:
